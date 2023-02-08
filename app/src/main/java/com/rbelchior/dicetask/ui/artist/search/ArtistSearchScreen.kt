@@ -1,18 +1,25 @@
 package com.rbelchior.dicetask.ui.artist.search
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import com.google.android.material.color.MaterialColors
+import com.rbelchior.dicetask.R
 import com.rbelchior.dicetask.ui.artist.search.mvi.ArtistSearchUiState
+import kotlinx.coroutines.launch
 import logcat.LogPriority
 import logcat.logcat
 import org.koin.androidx.compose.koinViewModel
@@ -20,32 +27,45 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun ArtistSearchScreen(
     navController: NavController,
+    snackbarHostState: SnackbarHostState,
     viewModel: ArtistSearchViewModel = koinViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     ArtistSearchScreen(
         uiState = uiState,
+        snackbarHostState = snackbarHostState,
         onValueChange = {
             viewModel.onSearchInputChange(it)
         },
         onClearClicked = {
             viewModel.onClearClicked()
         },
-        onLoadMore = { viewModel.loadNextItems() },
-        onShowError = {}
+        onLoadMore = { viewModel.loadNextItems() }
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun ArtistSearchScreen(
     uiState: ArtistSearchUiState,
+    snackbarHostState: SnackbarHostState,
     onValueChange: (String) -> Unit,
     onClearClicked: () -> Unit,
     onLoadMore: () -> Unit,
-    onShowError: (String) -> Unit
 ) {
+    val keyboardController = LocalSoftwareKeyboardController.current
+
+    // In case it exists, display error in the snackbar
+    uiState.throwable?.let {
+        LaunchedEffect(snackbarHostState, uiState.throwable) {
+            keyboardController?.hide()
+            snackbarHostState.showSnackbar(
+                message = "Error: ${it.message ?: "unknown"}"
+            )
+        }
+    }
+
     Column(
         modifier = Modifier
             .padding(24.dp)
@@ -76,7 +96,7 @@ fun ArtistSearchScreen(
 
 
         LazyColumn(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
         ) {
             items(uiState.artists.size) { i ->
                 val item = uiState.artists[i]
@@ -95,7 +115,6 @@ fun ArtistSearchScreen(
             }
             item {
                 if (uiState.isLoading) {
-                    println("> LOOOOOOADING")
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -106,11 +125,6 @@ fun ArtistSearchScreen(
                     }
                 }
             }
-        }
-
-        // Display error message / snackbar
-        uiState.throwable?.let {
-            onShowError(it.message ?: "Unknown")
         }
     }
 }

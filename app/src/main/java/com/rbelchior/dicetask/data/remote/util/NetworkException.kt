@@ -3,7 +3,9 @@ package com.rbelchior.dicetask.data.remote.util
 import io.ktor.client.plugins.*
 import io.ktor.utils.io.errors.*
 
-sealed class NetworkException(val throwable: Throwable) : Throwable() {
+sealed class NetworkException(
+    throwable: Throwable
+) : Throwable(throwable) {
 
     /**
      * Base class for all response exceptions.
@@ -53,6 +55,6 @@ sealed class NetworkException(val throwable: Throwable) : Throwable() {
      * Any other exception.
      */
     data class UnknownError(
-        val exception: Throwable
-    ) : NetworkException(exception)
+        val throwable: Throwable
+    ) : NetworkException(throwable)
 }

@@ -2,6 +2,7 @@ package com.rbelchior.dicetask.ui.artist.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.rbelchior.dicetask.data.remote.util.NetworkException
 import com.rbelchior.dicetask.data.repository.DiceRepository
 import com.rbelchior.dicetask.domain.SearchArtistsResult
 import com.rbelchior.dicetask.ui.artist.search.mvi.ArtistSearchEvent
@@ -16,7 +17,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import logcat.LogPriority
 import logcat.logcat
 
 class ArtistSearchViewModel(
@@ -46,10 +46,11 @@ class ArtistSearchViewModel(
             reducer.currentValue.offset + SearchArtistsResult.PAGE_SIZE
         },
         onError = {
-            logcat(LogPriority.ERROR) { "onError: ${it.message}" }
-            reducer.sendEvent(
-                ArtistSearchEvent.SearchRequestError(it)
-            )
+            if (it.isCancellationException()) {
+                logcat { "Ignoring CancellationException, it's ok." }
+                return@DefaultPaginator
+            }
+            reducer.sendEvent(ArtistSearchEvent.SearchRequestError(it))
         },
         onSuccess = { page, newKey ->
             reducer.sendEvent(
@@ -65,6 +66,10 @@ class ArtistSearchViewModel(
 
     fun loadNextItems() {
         withDelay {
+            if (reducer.currentValue.query.isEmpty()) {
+                return@withDelay
+            }
+
             paginator.loadNextPage()
         }
     }
@@ -76,16 +81,9 @@ class ArtistSearchViewModel(
         )
 
         if (query.isNotEmpty()) {
-//            withDelay {
-//                searchArtist(query)
-//            }
             paginator.reset()
             loadNextItems()
         }
-    }
-
-    private fun onError(throwable: Throwable) {
-
     }
 
     fun onClearClicked() {
@@ -99,11 +97,7 @@ class ArtistSearchViewModel(
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
             delay(300L)
-            try {
-                action()
-            } catch (e: CancellationException) {
-                logcat { "Ignoring CancellationException, it's ok." }
-            }
+            action()
         }
     }
 
@@ -112,4 +106,7 @@ class ArtistSearchViewModel(
         searchJob?.cancel()
         searchJob = null
     }
+
+    private fun Throwable.isCancellationException() =
+        this is NetworkException.UnknownError && throwable is CancellationException
 }

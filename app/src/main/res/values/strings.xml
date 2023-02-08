@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">DiceTask</string>
+    <string name="content_description_person">Person icon</string>
 </resources>

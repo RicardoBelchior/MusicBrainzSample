@@ -10,19 +10,23 @@ class ArtistSearchReducer :
         val newState = when (event) {
             is ArtistSearchEvent.UserQueryUpdated -> oldState.copy(
                 query = event.query, artists = emptyList(),
-                endReached = false, offset = 0
+                endReached = false, offset = 0,
+                throwable = null
             )
             ArtistSearchEvent.UserQueryCleared -> oldState.copy(
                 query = "", artists = emptyList(),
-                endReached = false, offset = 0
+                endReached = false, offset = 0,
+                throwable = null
             )
             is ArtistSearchEvent.LoadingStateUpdated -> oldState.copy(
-                isLoading = event.isLoading
+                isLoading = event.isLoading,
+                throwable = null
             )
             is ArtistSearchEvent.SearchRequestSuccess -> oldState.copy(
                 artists = event.artists,
                 endReached = event.endReached,
-                offset = event.offset
+                offset = event.offset,
+                throwable = null
             )
             is ArtistSearchEvent.SearchRequestError -> oldState.copy(
                 throwable = event.throwable
@@ -30,6 +34,4 @@ class ArtistSearchReducer :
         }
         setState(newState)
     }
-
 }
-

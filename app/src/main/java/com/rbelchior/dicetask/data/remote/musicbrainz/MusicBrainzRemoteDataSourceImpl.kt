@@ -18,8 +18,6 @@ class MusicBrainzRemoteDataSourceImpl(
         query: String, offset: Int, limit: Int
     ): Result<SearchArtistsResultDto> {
         return safeCall {
-            delay(1000)
-
             client.get(urlString = "$baseUrl/artist") {
                 parameter("query", query)
                 parameter("offset", offset)
