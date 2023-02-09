@@ -15,7 +15,7 @@ fun ArtistDto.toDomain(): Artist {
     return Artist(
         id,
         name,
-        type,
+        Artist.Type.fromValue(type),
         area?.let {
             Artist.Area(
                 it.id!!,
