@@ -89,23 +89,23 @@ class ArtistSearchViewModelTest {
     // Ensure the UI behaves correctly when the network request fails
     @Test
     fun when_query_updated_but_request_fails_should_return_correct_ui_states() = runTest {
-        TODO()
+        //TODO...
     }
 
     // Test the remaining user intents
     @Test
     fun when_clear_query_should_return_correct_ui_states() = runTest {
-        TODO()
+        //TODO...
     }
 
     @Test
     fun when_load_more_should_return_correct_ui_states() = runTest {
-        TODO()
+        //TODO...
     }
 
     @Test
     fun when_artist_clicked_should_return_correct_ui_states() = runTest {
-        TODO()
+        //TODO...
     }
 
     // Process the given user intent and block the coroutine until all UI states are handled.

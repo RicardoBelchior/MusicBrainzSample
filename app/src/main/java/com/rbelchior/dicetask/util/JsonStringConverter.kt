@@ -21,7 +21,11 @@ class JsonStringConverter {
     inline fun <reified T> decodeFromString(input: String?): T? {
         return input?.let {
             try {
-                Json.decodeFromString(it)
+                Json {
+                    ignoreUnknownKeys = true
+                    explicitNulls = false
+                    isLenient = true
+                }.decodeFromString(it)
             } catch (e: IllegalArgumentException) {
                 logcat(LogPriority.ERROR) { "Exception in encodeToString: ${e.message}" }
                 null

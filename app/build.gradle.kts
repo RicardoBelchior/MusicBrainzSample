@@ -87,6 +87,7 @@ dependencies {
     testImplementation(libs.kotest.assertions)
     testImplementation(libs.kotlin.coroutines.test)
     testImplementation(libs.kotlin.coroutines.android)
+    testImplementation(libs.ktor.mock)
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation(libs.androidx.test.espressoCore)
     androidTestImplementation(libs.compose.ui.test.junit4)

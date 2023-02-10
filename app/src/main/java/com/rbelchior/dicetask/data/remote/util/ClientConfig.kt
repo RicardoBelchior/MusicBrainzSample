@@ -24,7 +24,7 @@ internal val ktorLogger = object : Logger {
 }
 
 @OptIn(ExperimentalSerializationApi::class)
-internal fun createHttpClient(): HttpClient {
+internal fun createHttpClient(engine: HttpClientEngine): HttpClient {
     val config: HttpClientConfig<*>.() -> Unit = {
         expectSuccess = true
         followRedirects = false
@@ -57,5 +57,5 @@ internal fun createHttpClient(): HttpClient {
         }
     }
 
-    return HttpClient(Android, config)
+    return HttpClient(engine, config)
 }
