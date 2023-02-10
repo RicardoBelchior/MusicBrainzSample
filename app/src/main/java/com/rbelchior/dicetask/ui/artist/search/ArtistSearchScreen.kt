@@ -18,12 +18,17 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.rbelchior.dicetask.R
 import com.rbelchior.dicetask.domain.Artist
+import com.rbelchior.dicetask.ui.artist.search.mvi.ArtistSearchIntent
 import com.rbelchior.dicetask.ui.artist.search.mvi.ArtistSearchUiState
 import org.koin.androidx.compose.koinViewModel
 
@@ -39,12 +44,14 @@ fun ArtistSearchScreen(
         uiState = uiState,
         snackbarHostState = snackbarHostState,
         onValueChange = {
-            viewModel.onSearchInputChange(it)
+            viewModel.onIntent(ArtistSearchIntent.OnQueryUpdated(it))
         },
         onClearClicked = {
-            viewModel.onClearClicked()
+            viewModel.onIntent(ArtistSearchIntent.OnClearQueryClicked)
         },
-        onLoadMore = { viewModel.loadNextItems() }
+        onLoadMore = {
+            viewModel.onIntent(ArtistSearchIntent.OnLoadMoreItems)
+        }
     )
 }
 
@@ -84,6 +91,16 @@ fun ArtistSearchScreen(
     }
 }
 
+@Preview(showBackground = true)
+@Composable
+fun ArtistSearchScreenPreview(
+    @PreviewParameter(ArtistSearchUiStatePreviewParameterProvider::class) uiState: ArtistSearchUiState
+) {
+    ArtistSearchScreen(
+        uiState, SnackbarHostState(), {}, {}, {}
+    )
+}
+
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 private fun ArtistsTextInput(
@@ -92,11 +109,17 @@ private fun ArtistsTextInput(
     onClearClicked: () -> Unit
 ) {
     TextField(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .semantics { contentDescription = "Search artists input" },
         value = uiState.query,
         onValueChange = onValueChange,
         textStyle = MaterialTheme.typography.bodyLarge,
-        placeholder = { Text("Search artists...") },
+        placeholder = {
+            Text(
+                text = "Search artists...",
+                modifier = Modifier.semantics { contentDescription = "Search artists placeholder" })
+        },
         trailingIcon = {
             IconButton(
                 onClick = onClearClicked,
@@ -131,7 +154,9 @@ fun ArtistsList(
     }
 
     LazyColumn(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .semantics { contentDescription = "Artists list" },
         state = listState
     ) {
         itemsIndexed(uiState.artists) { i, artist ->
@@ -166,6 +191,7 @@ fun ArtistItem(artist: Artist) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
+            .semantics { testTag = "Artist item" }
     ) {
         Row {
             ArtistIcon(artist.type, modifier = Modifier.padding(end = 8.dp))
@@ -181,18 +207,12 @@ fun ArtistItem(artist: Artist) {
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
-fun ArtistItemPreview() {
-    ArtistItem(
-        artist = Artist(
-            "id", "Coldplay", Artist.Type.GROUP,
-            Artist.Area("uk", "country", "UK"),
-            Artist.Area("area", "city", "London"),
-            emptyList(),
-            Artist.LifeSpan("1996-12", null), emptyList(), null
-        )
-    )
+fun ArtistItemPreview(
+    @PreviewParameter(ArtistPreviewParameterProvider::class) artist: Artist
+) {
+    ArtistItem(artist)
 }
 
 private fun Artist.buildLabel() = buildString {
@@ -222,27 +242,27 @@ fun ArtistIcon(artistType: Artist.Type, modifier: Modifier) {
         )
         Artist.Type.GROUP -> Icon(
             painterResource(id = R.drawable.ic_groups),
-            stringResource(id = R.string.content_description_person),
+            stringResource(id = R.string.content_description_group),
             modifier,
         )
         Artist.Type.ORCHESTRA -> Icon(
             painterResource(id = R.drawable.ic_piano),
-            stringResource(id = R.string.content_description_person),
+            stringResource(id = R.string.content_description_orchestra),
             modifier,
         )
         Artist.Type.CHOIR -> Icon(
             painterResource(id = R.drawable.ic_music_note),
-            stringResource(id = R.string.content_description_person),
+            stringResource(id = R.string.content_description_choir),
             modifier,
         )
         Artist.Type.CHARACTER -> Icon(
             Icons.Outlined.Face,
-            stringResource(id = R.string.content_description_person),
+            stringResource(id = R.string.content_description_character),
             modifier,
         )
         Artist.Type.OTHER -> Icon(
             painterResource(id = R.drawable.ic_library_music),
-            stringResource(id = R.string.content_description_person),
+            stringResource(id = R.string.content_description_other),
             modifier,
         )
         Artist.Type.UNKNOWN -> {}

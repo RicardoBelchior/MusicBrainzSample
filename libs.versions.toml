@@ -95,5 +95,5 @@ ktor-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = 
 
 logcat = "com.squareup.logcat:logcat:0.1"
 
-mockk = "io.mockk:mockk:1.11.0"
-kotest-assertions = "io.kotest:kotest-assertions-core:5.0.2"
+mockk = "io.mockk:mockk:1.13.4"
+kotest-assertions = "io.kotest:kotest-assertions-core:5.5.5"

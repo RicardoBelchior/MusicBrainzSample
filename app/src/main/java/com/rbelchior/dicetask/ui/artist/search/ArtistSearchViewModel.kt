@@ -6,17 +6,15 @@ import com.rbelchior.dicetask.data.remote.util.NetworkException
 import com.rbelchior.dicetask.data.repository.DiceRepository
 import com.rbelchior.dicetask.domain.SearchArtistsResult
 import com.rbelchior.dicetask.ui.artist.search.mvi.ArtistSearchEvent
+import com.rbelchior.dicetask.ui.artist.search.mvi.ArtistSearchIntent
 import com.rbelchior.dicetask.ui.artist.search.mvi.ArtistSearchReducer
 import com.rbelchior.dicetask.ui.artist.search.mvi.ArtistSearchUiState
 import com.rbelchior.dicetask.ui.util.paginator.DefaultPaginator
-import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
 import logcat.logcat
 
 class ArtistSearchViewModel(
@@ -32,7 +30,7 @@ class ArtistSearchViewModel(
             initialValue = ArtistSearchUiState.DEFAULT
         )
 
-    private val paginator = DefaultPaginator(
+    private val paginator = DefaultPaginator<Int, SearchArtistsResult>(
         initialKey = reducer.currentValue.offset,
         onLoadUpdated = {
             reducer.sendEvent(
@@ -64,7 +62,19 @@ class ArtistSearchViewModel(
 
     private var searchJob: Job? = null
 
-    fun loadNextItems() {
+    /**
+     * Main entry point into the ViewModel
+     */
+    fun onIntent(intent: ArtistSearchIntent) {
+        when (intent) {
+            is ArtistSearchIntent.OnQueryUpdated -> handleSearchInputUpdated(intent.query)
+            ArtistSearchIntent.OnClearQueryClicked -> handleOnClearClicked()
+            ArtistSearchIntent.OnLoadMoreItems -> loadNextItems()
+            is ArtistSearchIntent.OnArtistClicked -> TODO()
+        }
+    }
+
+    private fun loadNextItems() {
         withDelay {
             if (reducer.currentValue.query.isEmpty()) {
                 return@withDelay
@@ -74,8 +84,7 @@ class ArtistSearchViewModel(
         }
     }
 
-    fun onSearchInputChange(query: String) {
-        logcat { "onSearchInputChange: $query" }
+    private fun handleSearchInputUpdated(query: String) {
         reducer.sendEvent(
             ArtistSearchEvent.UserQueryUpdated(query)
         )
@@ -86,8 +95,7 @@ class ArtistSearchViewModel(
         }
     }
 
-    fun onClearClicked() {
-        logcat { "onClearClicked" }
+    private fun handleOnClearClicked() {
         reducer.sendEvent(
             ArtistSearchEvent.UserQueryCleared
         )

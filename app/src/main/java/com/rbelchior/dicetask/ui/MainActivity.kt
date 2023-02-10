@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -28,6 +27,8 @@ class MainActivity : ComponentActivity(), KoinComponent {
 
             DiceTaskTheme {
                 Scaffold(
+                    topBar = {}, // This could be used for the toolbar
+                    bottomBar = {}, // Or the bottom navigation
                     snackbarHost = { SnackbarHost(snackbarHostState) }
                 ) { contentPadding ->
                     NavigationComponent(navController, snackbarHostState, Modifier.padding(contentPadding))
@@ -52,11 +53,3 @@ fun NavigationComponent(
         composable(Screen.ArtistDetail.route) { Text("DETAIL") }
     }
 }
-
-//@Preview(showBackground = true)
-//@Composable
-//fun DefaultPreview() {
-//    DiceTaskTheme {
-//        Greeting("Android")
-//    }
-//}

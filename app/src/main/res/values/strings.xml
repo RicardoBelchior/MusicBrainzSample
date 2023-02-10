@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">DiceTask</string>
     <string name="content_description_person">Person icon</string>
+    <string name="content_description_group">Group icon</string>
+    <string name="content_description_orchestra">Orchestra icon</string>
+    <string name="content_description_choir">Choir icon</string>
+    <string name="content_description_character">Character icon</string>
+    <string name="content_description_other">Other icon</string>
 </resources>

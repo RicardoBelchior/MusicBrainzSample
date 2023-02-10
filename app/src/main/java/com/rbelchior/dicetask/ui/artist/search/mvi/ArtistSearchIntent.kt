@@ -2,13 +2,11 @@ package com.rbelchior.dicetask.ui.artist.search.mvi
 
 sealed interface ArtistSearchIntent {
 
-    data class Init(
-        val query: String
-    ) : ArtistSearchIntent
+    data class OnQueryUpdated(val query: String) : ArtistSearchIntent
 
-    data class UpdateQuery(val query: String) : ArtistSearchIntent
+    object OnClearQueryClicked : ArtistSearchIntent
 
-    object ClearQuery : ArtistSearchIntent
+    object OnLoadMoreItems : ArtistSearchIntent
 
-    data class SelectArtist(val artistId: String) : ArtistSearchIntent
+    data class OnArtistClicked(val artistId: String) : ArtistSearchIntent
 }
