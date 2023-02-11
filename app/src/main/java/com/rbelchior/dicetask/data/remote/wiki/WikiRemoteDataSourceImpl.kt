@@ -5,8 +5,10 @@ import com.rbelchior.dicetask.data.remote.wiki.model.WikiSummaryDto
 import io.ktor.client.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
+import io.ktor.http.*
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.jsonPrimitive
 
 class WikiRemoteDataSourceImpl(
     private val client: HttpClient
@@ -14,7 +16,11 @@ class WikiRemoteDataSourceImpl(
 
     override suspend fun getWikipediaSummary(title: String): Result<WikiSummaryDto> {
         return safeCall {
-            client.get("https://en.wikipedia.org/api/rest_v1/page/summary/$title")
+            client.get("https://en.wikipedia.org/api/rest_v1/page/summary") {
+                url {
+                    appendPathSegments(title)
+                }
+            }
         }
     }
 
@@ -33,7 +39,8 @@ class WikiRemoteDataSourceImpl(
                 ?.jsonObject?.get("sitelinks")
                 ?.jsonObject?.get("enwiki")
                 ?.jsonObject?.get("title")
-                ?.toString()!!
+                ?.jsonPrimitive
+                ?.content!!
 
             return Result.success(title)
 

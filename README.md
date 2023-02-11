@@ -5,6 +5,10 @@ containing the following features:
 - Home screen, allowing to search for artists
 - See the detailed page of an artist, including their respective albums and EPs.
 
+Besides MusicBrainz, both [WikiData](https://www.wikidata.org/wiki/Wikidata:Data_access) 
+and [Wikipedia](https://www.mediawiki.org/wiki/API:Main_page) APIs are used to get the description 
+of an Artist.
+
 This app uses a package structure following clean architecture concepts:
 - data: Include Repositories, local and remote data sources
 - domain: Include the model objects and (if needed) use case classes

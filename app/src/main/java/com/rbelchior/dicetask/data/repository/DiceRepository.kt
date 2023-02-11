@@ -6,6 +6,8 @@ import com.rbelchior.dicetask.data.remote.musicbrainz.model.ArtistDto
 import com.rbelchior.dicetask.data.remote.wiki.WikiRemoteDataSource
 import com.rbelchior.dicetask.domain.Artist
 import com.rbelchior.dicetask.domain.SearchArtistsResult
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 class DiceRepository(
     private val musicBrainzRemoteDataSource: MusicBrainzRemoteDataSource,
@@ -31,8 +33,33 @@ class DiceRepository(
         return Result.success(artist)
     }
 
+    fun getArtistDetailsFlow(artistId: String): Flow<Result<Artist>> {
+        return flow {
+
+            // Emit value when result comes from the MusicBrainz API
+            val artistDtoResult: Result<ArtistDto> = musicBrainzRemoteDataSource
+                .lookupArtist(artistId)
+                .onSuccess { emit(Result.success(it.toDomain())) }
+                .onFailure { emit(Result.failure(it)) }
+
+
+            // Emit new value when result comes from the Wikipedia API
+            artistDtoResult.getOrNull()?.let { artist ->
+                artist.getWikiDescription()
+                    .onSuccess {
+                        emit(
+                            Result.success(
+                                artist.toDomain().copy(wikiDescription = it)
+                            )
+                        )
+                    }
+                    .onFailure { emit(Result.failure(it)) }
+            }
+        }
+    }
+
     private suspend fun ArtistDto.getWikiDescription(): Result<String> {
-        val firstWikiRelation = relations?.first { it.isTypeWikipedia || it.isTypeWikidata }
+        val firstWikiRelation = relations?.firstOrNull { it.isTypeWikipedia || it.isTypeWikidata }
             ?: return Result.failure(IllegalArgumentException("Could not find wiki relations: $this"))
 
         val pageTitle = firstWikiRelation.pageTitle!!

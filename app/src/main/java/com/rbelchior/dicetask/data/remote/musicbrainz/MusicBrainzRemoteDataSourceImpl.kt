@@ -30,7 +30,7 @@ class MusicBrainzRemoteDataSourceImpl(
     override suspend fun lookupArtist(artistId: String): Result<ArtistDto> {
         return safeCall {
             client.get(urlString = "$baseUrl/artist/$artistId") {
-                parameter("inc", "url-rels")
+                parameter("inc", "url-rels+tags")
             }
         }
     }

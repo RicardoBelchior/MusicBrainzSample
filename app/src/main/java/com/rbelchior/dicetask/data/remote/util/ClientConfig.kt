@@ -27,7 +27,7 @@ internal val ktorLogger = object : Logger {
 internal fun createHttpClient(engine: HttpClientEngine): HttpClient {
     val config: HttpClientConfig<*>.() -> Unit = {
         expectSuccess = true
-        followRedirects = false
+        followRedirects = true
 
         install(HttpTimeout) {
             requestTimeoutMillis = HTTP_TIMEOUT
