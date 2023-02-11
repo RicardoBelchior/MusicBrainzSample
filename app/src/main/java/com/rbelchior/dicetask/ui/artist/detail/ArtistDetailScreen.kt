@@ -71,7 +71,7 @@ fun ArtistDetailScreen(
                         placeholder = painterResource(id = R.drawable.ic_album),
                         fallback = painterResource(id = R.drawable.ic_album),
                         modifier = Modifier
-                            .clip(RoundedCornerShape(4.dp))
+                            .clip(RoundedCornerShape(8.dp))
                             .size(dimensionResource(id = R.dimen.artist_detail_image_size))
                     )
                 }

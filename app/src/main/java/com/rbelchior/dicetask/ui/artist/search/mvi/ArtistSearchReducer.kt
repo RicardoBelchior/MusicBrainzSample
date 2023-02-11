@@ -20,7 +20,6 @@ class ArtistSearchReducer :
             )
             is ArtistSearchEvent.LoadingStateUpdated -> oldState.copy(
                 isLoading = event.isLoading,
-                throwable = null
             )
             is ArtistSearchEvent.SearchRequestSuccess -> oldState.copy(
                 artists = event.artists,
