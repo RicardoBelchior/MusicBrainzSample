@@ -10,7 +10,7 @@ lintMinCompose = "30.0.0"
 
 kotlin = "1.8.0"
 coroutines = "1.6.4"
-coil = "1.3.2"
+coil = "2.2.2"
 
 androidxtest = "1.4.0"
 androidxnavigation = "2.5.3"

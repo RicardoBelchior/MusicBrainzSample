@@ -6,9 +6,9 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class LookupAlbumsResultDto(
     @SerialName("release-group-offset")
-    val releaseGroupOffset: Int?,
+    val releaseGroupOffset: Int,
     @SerialName("release-group-count")
-    val releaseGroupCount: Int?,
+    val releaseGroupCount: Int,
     @SerialName("release-groups")
     val releaseGroups: List<ReleaseGroupDto>?
 ) {

@@ -38,6 +38,8 @@ fun ArtistDto.toDomain(): Artist {
             ?.map { Artist.Tag(it.count, it.name) }
             ?.sortedByDescending { it.count }?.take(5) // Take only the 5 most relevant tags
             ?: emptyList(),
+        null,
+        null,
         null
     )
 }

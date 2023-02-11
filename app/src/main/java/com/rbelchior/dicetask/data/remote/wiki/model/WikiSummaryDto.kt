@@ -7,13 +7,15 @@ import kotlinx.serialization.Serializable
 data class WikiSummaryDto(
     val title: String?,
     @SerialName("originalimage")
-    val originalImage: OriginalImage?,
+    val originalImage: Image?,
+    @SerialName("thumbnail")
+    val thumbnailImage: Image?,
     val extract: String?,
     @SerialName("extract_html")
     val extractHtml: String?,
 ) {
     @Serializable
-    data class OriginalImage(
+    data class Image(
         val source: String?,
         val width: Int?,
         val height: Int?

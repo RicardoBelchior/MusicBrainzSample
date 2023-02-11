@@ -19,7 +19,7 @@ private const val HTTP_TIMEOUT = 30000L
 
 internal val ktorLogger = object : Logger {
     override fun log(message: String) {
-        logcat("HttpClient") { message }
+        logcat("[${Thread.currentThread().name}] HttpClient") { message }
     }
 }
 

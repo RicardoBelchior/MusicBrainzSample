@@ -67,6 +67,7 @@ dependencies {
 
     implementation(libs.mdc)
     implementation(libs.navigation.compose)
+    implementation(libs.coil.compose)
 
     implementation(libs.kotlin.serialization)
     implementation(libs.kotlin.datetime)

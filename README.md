@@ -14,6 +14,9 @@ This app uses a package structure following clean architecture concepts:
 - domain: Include the model objects and (if needed) use case classes
 - ui: Activities/Fragments/Views and ViewModels
 
+The search list activity uses pagination (see DefaultPaginator) in order to display all items from
+the API. The list of albums could also benefit from pagination, but that hasn't been implemented, yet. 
+
 The app uses [Ktor](https://ktor.io/) for accessing the APIs and 
 [Room](https://developer.android.com/training/data-storage/room) for local storage. 
 Communication between layers is done

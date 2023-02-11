@@ -24,18 +24,10 @@ class ArtistDetailViewModel(
         )
 
     init {
-
-
-        repository.getArtistDetailsFlow(artistId)
+        repository.getArtistDetails(artistId)
             .mapNotNull { it.getOrNull() }
             .onEach { artist -> _uiState.update { it.copy(artist = artist) } }
             .launchIn(viewModelScope)
 
-//        viewModelScope.launch {
-//            repository.getArtistDetails(artistId)
-//                .getOrNull()?.let { artist ->
-//                    _uiState.update { it.copy(artist = artist) }
-//                }
-//        }
     }
 }

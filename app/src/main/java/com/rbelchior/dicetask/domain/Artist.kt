@@ -9,7 +9,9 @@ data class Artist(
     val isnis: List<String>,
     val lifeSpan: LifeSpan?,
     val tags: List<Tag>,
-    val wikiDescription: String?
+    val wikiDescription: String? = null,
+    val thumbnailImageUrl: String? = null,
+    val releaseGroups: List<ReleaseGroup>? = null
 ) {
     data class Area(
         val id: String,
