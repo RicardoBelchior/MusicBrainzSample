@@ -7,6 +7,7 @@ data class ArtistSearchUiState(
     val query: String,
     val isLoading: Boolean,
     val artists: List<Artist>,
+    val savedArtists: List<Artist>,
     val throwable: Throwable?,
     val endReached: Boolean,
     val offset: Int

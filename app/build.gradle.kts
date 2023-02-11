@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.devtools.ksp") version libs.versions.ksp
     kotlin("plugin.serialization") version libs.versions.kotlin.get()
 }
 
@@ -64,6 +65,10 @@ dependencies {
     implementation(libs.compose.ui.ui)
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.compose.material3.material3)
+
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
 
     implementation(libs.mdc)
     implementation(libs.navigation.compose)

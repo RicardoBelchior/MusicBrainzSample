@@ -11,6 +11,8 @@ lintMinCompose = "30.0.0"
 kotlin = "1.8.0"
 coroutines = "1.6.4"
 coil = "2.2.2"
+ksp = "1.8.0-1.0.9"
+room = "2.5.0"
 
 androidxtest = "1.4.0"
 androidxnavigation = "2.5.3"
@@ -46,7 +48,6 @@ kotlin-metadataJvm = "org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.3.0"
 kotlin-serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0"
 kotlin-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.4.0"
 
-
 kotlin-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 kotlin-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 
@@ -64,6 +65,9 @@ androidx-lifecycle-runtime-compose = "androidx.lifecycle:lifecycle-runtime-compo
 androidx-lifecycle-viewmodel-compose = "androidx.lifecycle:lifecycle-viewmodel-compose:2.6.0-alpha05"
 androidx-window = { module = "androidx.window:window", version.ref = "androidxWindow" }
 androidx-window-testing = { module = "androidx.window:window-testing", version.ref = "androidxWindow" }
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "androidxnavigation" }
 androidx-navigation-testing = { module = "androidx.navigation:navigation-testing", version.ref = "androidxnavigation" }

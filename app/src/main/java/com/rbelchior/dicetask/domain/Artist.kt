@@ -11,7 +11,8 @@ data class Artist(
     val tags: List<Tag>,
     val wikiDescription: String? = null,
     val thumbnailImageUrl: String? = null,
-    val releaseGroups: List<ReleaseGroup>? = null
+    val releaseGroups: List<ReleaseGroup>? = null,
+    val isSaved: Boolean = false
 ) {
     data class Area(
         val id: String,

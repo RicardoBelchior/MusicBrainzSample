@@ -1,12 +1,20 @@
 package com.rbelchior.dicetask.util
 
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.serializer
 import logcat.LogPriority
 import logcat.logcat
 
+@OptIn(ExperimentalSerializationApi::class)
 class JsonStringConverter {
+
+    val jsonDecoder: Json = Json {
+        ignoreUnknownKeys = true
+        explicitNulls = false
+        isLenient = true
+    }
 
     inline fun <reified T> encodeToString(value: T?): String? =
         value?.let {
@@ -21,11 +29,7 @@ class JsonStringConverter {
     inline fun <reified T> decodeFromString(input: String?): T? {
         return input?.let {
             try {
-                Json {
-                    ignoreUnknownKeys = true
-                    explicitNulls = false
-                    isLenient = true
-                }.decodeFromString(it)
+                jsonDecoder.decodeFromString(it)
             } catch (e: IllegalArgumentException) {
                 logcat(LogPriority.ERROR) { "Exception in encodeToString: ${e.message}" }
                 null

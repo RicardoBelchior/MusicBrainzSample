@@ -1,5 +1,6 @@
 package com.rbelchior.dicetask.data.repository
 
+import com.rbelchior.dicetask.data.local.LocalDataSource
 import com.rbelchior.dicetask.data.mapper.toDomain
 import com.rbelchior.dicetask.data.remote.musicbrainz.MusicBrainzRemoteDataSource
 import com.rbelchior.dicetask.data.remote.musicbrainz.model.ArtistDto
@@ -16,7 +17,8 @@ import kotlinx.coroutines.flow.flow
 class DiceRepository(
     private val musicBrainzRemoteDataSource: MusicBrainzRemoteDataSource,
     private val wikiRemoteDataSource: WikiRemoteDataSource,
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+    private val localDataSource: LocalDataSource,
+    private val defaultDispatcher: CoroutineDispatcher = Dispatchers.Default
 ) {
 
     suspend fun searchArtist(
@@ -30,10 +32,16 @@ class DiceRepository(
     fun getArtistDetails(artistId: String): Flow<Result<Artist>> {
         return flow {
 
+            val artistFromDb = localDataSource.getArtist(artistId)
+            if (artistFromDb != null) {
+                emit(Result.success(artistFromDb))
+            }
+            val isSaved = artistFromDb != null
+
             // Emit value when result comes from the MusicBrainz API
             val artistDtoResult = musicBrainzRemoteDataSource
                 .lookupArtist(artistId)
-                .onSuccess { emit(Result.success(it.toDomain())) }
+                .onSuccess { emit(Result.success(it.toDomain().copy(isSaved = isSaved))) }
                 .onFailure { emit(Result.failure(it)) }
 
             val artistDto = artistDtoResult.getOrNull() ?: return@flow
@@ -41,13 +49,25 @@ class DiceRepository(
             // In parallel, get the wikipedia description and list of albums
             coroutineScope {
                 listOf(
-                    async(ioDispatcher) { artistDto.updateWithDescription() },
-                    async(ioDispatcher) { artistDto.updateWithReleaseGroups() }
+                    async(defaultDispatcher) { artistDto.updateWithDescription() },
+                    async(defaultDispatcher) { artistDto.updateWithReleaseGroups() }
                 ).awaitAll().let {
-                    mergeArtist(it[0], it[1])
+                    mergeArtist(it[0], it[1], isSaved)
                 }
             }
         }
+    }
+
+    fun getSavedArtists(): Flow<List<Artist>> {
+        return localDataSource.getSavedArtists()
+    }
+
+    suspend fun saveArtist(artist: Artist) {
+        localDataSource.saveArtist(artist)
+    }
+
+    suspend fun removeArtist(artist: Artist) {
+        localDataSource.removeArtist(artist)
     }
 
     private suspend fun ArtistDto.updateWithDescription(): Result<Artist> {
@@ -90,7 +110,9 @@ class DiceRepository(
 
     // Not very pretty but working code, merging description and albums into a single artist
     private suspend fun FlowCollector<Result<Artist>>.mergeArtist(
-        artistWithDescriptionResult: Result<Artist>, artistWithReleaseGroupsResult: Result<Artist>
+        artistWithDescriptionResult: Result<Artist>,
+        artistWithReleaseGroupsResult: Result<Artist>,
+        isSaved: Boolean
     ) {
         val artistWithDescription = artistWithDescriptionResult
             .onFailure { emit(Result.failure(it)) }
@@ -105,11 +127,14 @@ class DiceRepository(
         }
 
         val mergedArtist =
-            artistWithDescription?.copy(releaseGroups = artistWithReleaseGroups?.releaseGroups)
-                ?: artistWithReleaseGroups?.copy(
-                    wikiDescription = artistWithDescription?.wikiDescription,
-                    thumbnailImageUrl = artistWithDescription?.thumbnailImageUrl
-                )
+            artistWithDescription?.copy(
+                releaseGroups = artistWithReleaseGroups?.releaseGroups,
+                isSaved = isSaved
+            ) ?: artistWithReleaseGroups?.copy(
+                wikiDescription = artistWithDescription?.wikiDescription,
+                thumbnailImageUrl = artistWithDescription?.thumbnailImageUrl,
+                isSaved = isSaved
+            )
 
         mergedArtist?.let { emit(Result.success(it)) }
     }

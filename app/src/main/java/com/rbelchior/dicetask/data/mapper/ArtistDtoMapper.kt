@@ -16,20 +16,8 @@ fun ArtistDto.toDomain(): Artist {
         id,
         name,
         Artist.Type.fromValue(type),
-        area?.let {
-            Artist.Area(
-                it.id!!,
-                it.type ?: "",
-                it.name ?: ""
-            )
-        },
-        beginArea?.let {
-            Artist.Area(
-                it.id!!,
-                it.type ?: "",
-                it.name ?: ""
-            )
-        },
+        area?.toDomain(),
+        beginArea?.toDomain(),
         isnis ?: emptyList(),
         lifeSpan?.let {
             Artist.LifeSpan(it.begin, it.ended)
@@ -40,6 +28,11 @@ fun ArtistDto.toDomain(): Artist {
             ?: emptyList(),
         null,
         null,
-        null
+        null,
+        false
     )
+}
+
+private fun ArtistDto.AreaDto.toDomain(): Artist.Area {
+    return Artist.Area(id!!, type ?: "", name ?: "")
 }

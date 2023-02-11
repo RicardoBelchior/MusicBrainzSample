@@ -5,5 +5,5 @@ import org.koin.dsl.module
 
 internal val repositoryModule = module {
 
-    single { DiceRepository(get(), get()) }
+    single { DiceRepository(get(), get(), get()) }
 }
