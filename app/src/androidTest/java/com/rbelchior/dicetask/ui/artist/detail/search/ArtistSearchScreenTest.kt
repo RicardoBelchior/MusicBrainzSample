@@ -84,7 +84,7 @@ class ArtistSearchScreenTest {
         composeTestRule.setContent {
             DiceTaskTheme {
                 ArtistSearchScreen(
-                    state, SnackbarHostState(), {}, {}, {}
+                    state, SnackbarHostState(), {}, {}, {}, {}
                 )
             }
         }

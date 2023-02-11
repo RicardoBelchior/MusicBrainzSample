@@ -9,9 +9,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.rbelchior.dicetask.ui.artist.detail.ArtistDetailScreen
 import com.rbelchior.dicetask.ui.artist.search.ArtistSearchScreen
 import com.rbelchior.dicetask.ui.theme.DiceTaskTheme
 import org.koin.core.component.KoinComponent
@@ -31,7 +34,11 @@ class MainActivity : ComponentActivity(), KoinComponent {
                     bottomBar = {}, // Or the bottom navigation
                     snackbarHost = { SnackbarHost(snackbarHostState) }
                 ) { contentPadding ->
-                    NavigationComponent(navController, snackbarHostState, Modifier.padding(contentPadding))
+                    NavigationComponent(
+                        navController,
+                        snackbarHostState,
+                        Modifier.padding(contentPadding)
+                    )
                 }
             }
         }
@@ -49,7 +56,20 @@ fun NavigationComponent(
         startDestination = Screen.ArtistSearch.route,
         modifier = modifier
     ) {
-        composable(Screen.ArtistSearch.route) { ArtistSearchScreen(navController, snackbarHostState) }
-        composable(Screen.ArtistDetail.route) { Text("DETAIL") }
+        composable(Screen.ArtistSearch.route) {
+            ArtistSearchScreen(navController, snackbarHostState)
+        }
+        composable(
+            Screen.ArtistDetail.route,
+            arguments = listOf(
+                navArgument(Screen.ArtistDetail.ARG_ARTIST_ID) { type = NavType.StringType },
+                navArgument(Screen.ArtistDetail.ARG_ARTIST_NAME) { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val navArgs = backStackEntry.arguments!!
+            val artistId = navArgs.getString(Screen.ArtistDetail.ARG_ARTIST_ID)!!
+            val artistName = navArgs.getString(Screen.ArtistDetail.ARG_ARTIST_NAME)!!
+            ArtistDetailScreen(navController, snackbarHostState, artistId, artistName)
+        }
     }
 }

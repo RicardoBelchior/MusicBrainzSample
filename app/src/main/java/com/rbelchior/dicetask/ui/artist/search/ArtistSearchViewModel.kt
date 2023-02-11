@@ -70,7 +70,6 @@ class ArtistSearchViewModel(
             is ArtistSearchIntent.OnQueryUpdated -> handleSearchInputUpdated(intent.query)
             ArtistSearchIntent.OnClearQueryClicked -> handleOnClearClicked()
             ArtistSearchIntent.OnLoadMoreItems -> loadNextItems()
-            is ArtistSearchIntent.OnArtistClicked -> TODO()
         }
     }
 

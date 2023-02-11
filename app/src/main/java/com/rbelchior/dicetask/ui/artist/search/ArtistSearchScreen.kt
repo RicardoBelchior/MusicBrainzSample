@@ -1,6 +1,7 @@
 package com.rbelchior.dicetask.ui.artist.search
 
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.animateScrollBy
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -28,6 +29,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.rbelchior.dicetask.R
 import com.rbelchior.dicetask.domain.Artist
+import com.rbelchior.dicetask.ui.Screen
 import com.rbelchior.dicetask.ui.artist.search.mvi.ArtistSearchIntent
 import com.rbelchior.dicetask.ui.artist.search.mvi.ArtistSearchUiState
 import org.koin.androidx.compose.koinViewModel
@@ -51,6 +53,9 @@ fun ArtistSearchScreen(
         },
         onLoadMore = {
             viewModel.onIntent(ArtistSearchIntent.OnLoadMoreItems)
+        },
+        onArtistClicked = {
+            navController.navigate(Screen.ArtistDetail.buildRoute(it.id, it.name))
         }
     )
 }
@@ -63,6 +68,7 @@ fun ArtistSearchScreen(
     onValueChange: (String) -> Unit,
     onClearClicked: () -> Unit,
     onLoadMore: () -> Unit,
+    onArtistClicked: (artist: Artist) -> Unit
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
 
@@ -87,7 +93,7 @@ fun ArtistSearchScreen(
         )
         Spacer(modifier = Modifier.size(24.dp))
         ArtistsTextInput(uiState, onValueChange, onClearClicked)
-        ArtistsList(uiState, onLoadMore)
+        ArtistsList(uiState, onLoadMore, onArtistClicked)
     }
 }
 
@@ -97,7 +103,7 @@ fun ArtistSearchScreenPreview(
     @PreviewParameter(ArtistSearchUiStatePreviewParameterProvider::class) uiState: ArtistSearchUiState
 ) {
     ArtistSearchScreen(
-        uiState, SnackbarHostState(), {}, {}, {}
+        uiState, SnackbarHostState(), {}, {}, {}, {}
     )
 }
 
@@ -136,7 +142,8 @@ private fun ArtistsTextInput(
 @Composable
 fun ArtistsList(
     uiState: ArtistSearchUiState,
-    onLoadMore: () -> Unit
+    onLoadMore: () -> Unit,
+    onArtistClicked: (artist: Artist) -> Unit
 ) {
     val listState = rememberLazyListState()
 
@@ -163,7 +170,7 @@ fun ArtistsList(
             if (i >= uiState.artists.size - 1 && !uiState.endReached && !uiState.isLoading) {
                 onLoadMore()
             }
-            ArtistItem(artist)
+            ArtistItem(artist, onArtistClicked)
 
             // Display divider between each item
             if (i < uiState.artists.lastIndex) {
@@ -186,11 +193,12 @@ fun ArtistsList(
 }
 
 @Composable
-fun ArtistItem(artist: Artist) {
+fun ArtistItem(artist: Artist, onClick: (artist: Artist) -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
+            .clickable { onClick(artist) }
             .semantics { testTag = "Artist item" }
     ) {
         Row {
@@ -212,7 +220,7 @@ fun ArtistItem(artist: Artist) {
 fun ArtistItemPreview(
     @PreviewParameter(ArtistPreviewParameterProvider::class) artist: Artist
 ) {
-    ArtistItem(artist)
+    ArtistItem(artist) {}
 }
 
 private fun Artist.buildLabel() = buildString {

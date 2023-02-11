@@ -7,6 +7,4 @@ sealed interface ArtistSearchIntent {
     object OnClearQueryClicked : ArtistSearchIntent
 
     object OnLoadMoreItems : ArtistSearchIntent
-
-    data class OnArtistClicked(val artistId: String) : ArtistSearchIntent
 }
