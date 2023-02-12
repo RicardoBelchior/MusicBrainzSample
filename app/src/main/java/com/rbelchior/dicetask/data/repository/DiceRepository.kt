@@ -8,6 +8,7 @@ import com.rbelchior.dicetask.data.remote.musicbrainz.MusicBrainzRemoteDataSourc
 import com.rbelchior.dicetask.data.remote.wiki.WikiRemoteDataSource
 import com.rbelchior.dicetask.data.remote.wiki.model.WikiSummaryDto
 import com.rbelchior.dicetask.domain.Artist
+import com.rbelchior.dicetask.domain.FriendlyException
 import com.rbelchior.dicetask.domain.ReleaseGroupsResult
 import com.rbelchior.dicetask.domain.SearchArtistsResult
 import kotlinx.coroutines.*
@@ -89,7 +90,7 @@ class DiceRepository(
     private suspend fun getWikiSummary(artist: Artist): Result<WikiSummaryDto> {
         val firstWikiRelation = artist.relations
             ?.firstOrNull { it.isTypeWikipedia || it.isTypeWikidata }
-            ?: return Result.failure(IllegalArgumentException("Could not find wiki relations: $this"))
+            ?: return Result.failure(FriendlyException("Could not find wiki relations: $this"))
 
         val pageTitle = firstWikiRelation.pageTitle!!
 

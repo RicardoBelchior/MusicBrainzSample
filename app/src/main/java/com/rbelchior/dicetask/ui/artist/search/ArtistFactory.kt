@@ -46,6 +46,10 @@ internal object ArtistFactory {
         ArtistSearchUiState(
             "Coldplay", false, artists.toList(),
             emptyList(), null, false, 0
+        ),
+        ArtistSearchUiState(
+            "", false, emptyList(),
+            artists.toList(), null, false, 0
         )
     )
 }

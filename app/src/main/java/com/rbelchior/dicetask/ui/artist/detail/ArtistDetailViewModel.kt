@@ -4,36 +4,34 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rbelchior.dicetask.data.repository.DiceRepository
 import com.rbelchior.dicetask.domain.Artist
-import kotlinx.coroutines.delay
+import com.rbelchior.dicetask.domain.FriendlyException
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class ArtistDetailViewModel(
-    private val artistId: String,
+    artistId: String,
     private val repository: DiceRepository,
 ) : ViewModel() {
 
-    data class UiState(
-        val artist: Artist? = null,
-        val throwable: Throwable? = null
-    )
-
-    private val _uiState = MutableStateFlow(UiState())
-    val uiState: StateFlow<UiState> = _uiState
+    private val _uiState = MutableStateFlow(ArtistDetailUiState())
+    val uiState: StateFlow<ArtistDetailUiState> = _uiState
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = UiState()
+            initialValue = ArtistDetailUiState()
         )
 
     init {
         repository.getArtistDetails(artistId)
+            .filterNot { it.isFailure && it.exceptionOrNull() is FriendlyException }
             .onEach { result ->
                 if (result.isSuccess) {
-                    _uiState.update { it.copy(
-                        artist = result.getOrThrow(),
-                        throwable = result.exceptionOrNull()
-                    ) }
+                    _uiState.update {
+                        it.copy(
+                            artist = result.getOrThrow(),
+                            throwable = result.exceptionOrNull()
+                        )
+                    }
                 } else {
                     _uiState.update { it.copy(throwable = result.exceptionOrNull()) }
                 }

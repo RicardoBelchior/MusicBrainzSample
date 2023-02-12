@@ -19,6 +19,11 @@ data class ArtistSearchUiState(
 
     val shouldLoadMore = !endReached && !isLoading
 
+    /**
+     * Using a "filtered" list to take advantage of the item animations provided by LazyRow.
+     */
+    val filteredSavedArtists = if (shouldDisplaySavedArtists) savedArtists else emptyList()
+
     companion object {
         val DEFAULT = ArtistSearchUiState(
             query = "", isLoading = false,

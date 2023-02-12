@@ -1,6 +1,10 @@
+@file:OptIn(ExperimentalFoundationApi::class)
+
 package com.rbelchior.dicetask.ui.artist.search
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.animateScrollBy
 import androidx.compose.foundation.layout.*
@@ -86,7 +90,7 @@ fun ArtistSearchScreen(
     ) {
         Text(
             text = "Hello Dice",
-            style = MaterialTheme.typography.headlineLarge
+            style = MaterialTheme.typography.displaySmall
         )
         Spacer(modifier = Modifier.size(24.dp))
         ArtistsTextInput(uiState, onValueChange, onClearClicked)
@@ -136,6 +140,7 @@ private fun ArtistsTextInput(
     )
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ArtistsList(
     uiState: ArtistSearchUiState,
@@ -169,7 +174,7 @@ fun ArtistsList(
             if (i >= uiState.searchResults.size - 1 && uiState.shouldLoadMore) {
                 onLoadMore()
             }
-            ArtistItem(artist, onArtistClicked)
+            ArtistItem(Modifier.animateItemPlacement(), artist, onArtistClicked)
 
             // Display divider between each item
             if (i < uiState.searchResults.lastIndex) {
@@ -178,17 +183,24 @@ fun ArtistsList(
         }
 
         // Display saved artists
-        if (uiState.shouldDisplaySavedArtists) {
-            item { Text("Saved artists:") }
-            itemsIndexed(uiState.savedArtists) { i, artist ->
-                ArtistItem(artist, onArtistClicked)
-
-                // Display divider between each item
-                if (i < uiState.savedArtists.lastIndex) {
-                    Divider()
-                }
+        item {
+            AnimatedVisibility(visible = uiState.shouldDisplaySavedArtists) {
+                Text(
+                    "Saved artists:",
+                    modifier = Modifier.padding(top = 16.dp),
+                    style = MaterialTheme.typography.labelLarge
+                )
             }
         }
+        itemsIndexed(uiState.filteredSavedArtists) { i, artist ->
+            ArtistItem(Modifier.animateItemPlacement(), artist, onArtistClicked)
+
+            // Display divider between each item
+            if (i < uiState.savedArtists.lastIndex) {
+                Divider()
+            }
+        }
+
         // Loading indicator
         item {
             if (uiState.isLoading) {
@@ -206,9 +218,9 @@ fun ArtistsList(
 }
 
 @Composable
-fun ArtistItem(artist: Artist, onClick: (artist: Artist) -> Unit) {
+fun ArtistItem(modifier: Modifier, artist: Artist, onClick: (artist: Artist) -> Unit) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(16.dp)
             .clickable { onClick(artist) }
@@ -222,7 +234,7 @@ fun ArtistItem(artist: Artist, onClick: (artist: Artist) -> Unit) {
         Row {
             Text(
                 text = artist.buildLabel(),
-                style = MaterialTheme.typography.labelMedium
+                style = MaterialTheme.typography.bodySmall
             )
         }
     }
@@ -233,7 +245,7 @@ fun ArtistItem(artist: Artist, onClick: (artist: Artist) -> Unit) {
 fun ArtistItemPreview(
     @PreviewParameter(ArtistPreviewParameterProvider::class) artist: Artist
 ) {
-    ArtistItem(artist) {}
+    ArtistItem(Modifier, artist) {}
 }
 
 private fun Artist.buildLabel() = buildString {

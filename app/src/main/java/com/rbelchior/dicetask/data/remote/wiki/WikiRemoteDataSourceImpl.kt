@@ -2,6 +2,7 @@ package com.rbelchior.dicetask.data.remote.wiki
 
 import com.rbelchior.dicetask.data.remote.util.safeCall
 import com.rbelchior.dicetask.data.remote.wiki.model.WikiSummaryDto
+import com.rbelchior.dicetask.domain.FriendlyException
 import io.ktor.client.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
@@ -37,7 +38,7 @@ class WikiRemoteDataSourceImpl(
                 .jsonObject["entities"]
                 ?.jsonObject?.get(id)
                 ?.jsonObject?.get("sitelinks")
-                ?.jsonObject?.get("enwiki")
+                ?.jsonObject?.get("enwiki") // TODO: Not all 'sitelinks' have enwiki. Some pages are only available in other languages.
                 ?.jsonObject?.get("title")
                 ?.jsonPrimitive
                 ?.content!!
@@ -45,9 +46,8 @@ class WikiRemoteDataSourceImpl(
             return Result.success(title)
 
         } catch (e: Exception) {
-            // TODO: Improve error handling
             e.printStackTrace()
-            return Result.failure(e)
+            return Result.failure(FriendlyException("Could not fetch wikipedia link"))
         }
     }
 }
