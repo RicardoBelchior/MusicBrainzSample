@@ -81,7 +81,7 @@ class ArtistSearchViewModelTest {
             uiStates[3].let {
                 it.query shouldBe "coldplay"
                 it.isLoading shouldBe false
-                it.artists shouldBe artists
+                it.searchResults shouldBe artists
             }
         }
     }

@@ -33,4 +33,10 @@ sealed interface ArtistSearchEvent : UiEvent {
      * An error response was returned from the search request
      */
     data class SearchRequestError(val throwable: Throwable) : ArtistSearchEvent
+
+    /**
+     * Triggered when the list of saved artists has changed.
+     */
+    data class SavedArtistsUpdated(val savedArtists: List<Artist>) : ArtistSearchEvent
+
 }

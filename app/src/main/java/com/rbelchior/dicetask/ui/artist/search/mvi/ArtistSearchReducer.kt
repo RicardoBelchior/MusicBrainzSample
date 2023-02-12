@@ -1,7 +1,6 @@
 package com.rbelchior.dicetask.ui.artist.search.mvi
 
 import com.rbelchior.dicetask.ui.util.Reducer
-import logcat.logcat
 
 class ArtistSearchReducer :
     Reducer<ArtistSearchUiState, ArtistSearchEvent>(ArtistSearchUiState.DEFAULT) {
@@ -9,12 +8,13 @@ class ArtistSearchReducer :
     override fun reduce(oldState: ArtistSearchUiState, event: ArtistSearchEvent) {
         val newState = when (event) {
             is ArtistSearchEvent.UserQueryUpdated -> oldState.copy(
-                query = event.query, artists = emptyList(),
+                query = event.query,
+                searchResults = emptyList(),
                 endReached = false, offset = 0,
                 throwable = null
             )
             ArtistSearchEvent.UserQueryCleared -> oldState.copy(
-                query = "", artists = emptyList(),
+                query = "", searchResults = emptyList(),
                 endReached = false, offset = 0,
                 throwable = null
             )
@@ -22,13 +22,16 @@ class ArtistSearchReducer :
                 isLoading = event.isLoading,
             )
             is ArtistSearchEvent.SearchRequestSuccess -> oldState.copy(
-                artists = event.artists,
+                searchResults = event.artists,
                 endReached = event.endReached,
                 offset = event.offset,
                 throwable = null
             )
             is ArtistSearchEvent.SearchRequestError -> oldState.copy(
                 throwable = event.throwable
+            )
+            is ArtistSearchEvent.SavedArtistsUpdated -> oldState.copy(
+                savedArtists = event.savedArtists
             )
         }
         setState(newState)

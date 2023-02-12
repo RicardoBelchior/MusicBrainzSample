@@ -37,7 +37,7 @@ internal object ArtistFactory {
         ArtistSearchUiState.DEFAULT,
         ArtistSearchUiState(
             "Coldplay", false, artists.toList(),
-            null, false, 0
+            emptyList(), null, false, 0
         )
     )
 }

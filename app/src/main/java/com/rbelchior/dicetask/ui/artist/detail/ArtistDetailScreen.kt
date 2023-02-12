@@ -1,5 +1,6 @@
 package com.rbelchior.dicetask.ui.artist.detail
 
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -7,24 +8,26 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
+import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.rbelchior.dicetask.R
+import com.rbelchior.dicetask.domain.Artist
+import com.rbelchior.dicetask.ui.components.AnimatedIconToggleButton
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ArtistDetailScreen(
     navController: NavHostController,
@@ -34,15 +37,49 @@ fun ArtistDetailScreen(
     viewModel: ArtistDetailViewModel = koinViewModel { parametersOf(artistId) },
 ) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
+    val scope = rememberCoroutineScope()
 
+    ArtistDetailScreen(
+        artistName,
+        uiState.value,
+        { navController.popBackStack() },
+        {
+            viewModel.toggleSavedArtist(it)
+            scope.launch {
+                val messageSuffix = if (it.isSaved) " removed." else " saved."
+                snackbarHostState.showSnackbar(it.name + messageSuffix)
+            }
+        }
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ArtistDetailScreen(
+    artistName: String,
+    uiState: ArtistDetailViewModel.UiState,
+    onBackButtonClicked: () -> Unit,
+    onSaveArtistClicked: (Artist) -> Unit,
+) {
     Column {
         TopAppBar(
             title = { Text(artistName) },
             navigationIcon = {
-                IconButton(onClick = { navController.navigateUp() }) {
+                IconButton(onClick = onBackButtonClicked) {
                     Icon(
                         imageVector = Icons.Filled.ArrowBack,
                         contentDescription = "Back icon"
+                    )
+                }
+            },
+            actions = {
+                if (uiState.artist != null) {
+
+                    AnimatedIconToggleButton(
+                        isChecked = uiState.artist.isSaved,
+                        onCheckedChange = {
+                            onSaveArtistClicked(uiState.artist)
+                        }
                     )
                 }
             }
@@ -54,7 +91,9 @@ fun ArtistDetailScreen(
                 .verticalScroll(rememberScrollState())
         ) {
 
-            uiState.value.artist?.let {
+            val placeholder = rememberAsyncImagePainter(R.drawable.ic_album)
+
+            uiState.artist?.let {
 
                 Box(
                     modifier = Modifier.fillMaxWidth(),
@@ -68,8 +107,8 @@ fun ArtistDetailScreen(
                         contentDescription = "Album image",
                         contentScale = ContentScale.FillHeight,
                         alignment = Alignment.Center,
-                        placeholder = painterResource(id = R.drawable.ic_album),
-                        fallback = painterResource(id = R.drawable.ic_album),
+                        placeholder = placeholder,
+                        fallback = placeholder,
                         modifier = Modifier
                             .clip(RoundedCornerShape(8.dp))
                             .size(dimensionResource(id = R.dimen.artist_detail_image_size))

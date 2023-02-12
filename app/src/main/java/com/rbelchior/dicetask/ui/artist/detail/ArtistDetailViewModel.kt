@@ -4,7 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rbelchior.dicetask.data.repository.DiceRepository
 import com.rbelchior.dicetask.domain.Artist
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 
 class ArtistDetailViewModel(
     private val artistId: String,
@@ -29,5 +31,20 @@ class ArtistDetailViewModel(
             .onEach { artist -> _uiState.update { it.copy(artist = artist) } }
             .launchIn(viewModelScope)
 
+    }
+
+    fun toggleSavedArtist(artist: Artist) {
+        viewModelScope.launch {
+            if (artist.isSaved) {
+                repository.removeArtist(artist)
+            } else {
+                repository.saveArtist(artist)
+            }
+        }
+        _uiState.update {
+            it.copy(
+                artist = artist.copy(isSaved = !artist.isSaved)
+            )
+        }
     }
 }

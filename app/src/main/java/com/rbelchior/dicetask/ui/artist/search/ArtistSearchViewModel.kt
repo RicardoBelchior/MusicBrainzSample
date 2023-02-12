@@ -10,11 +10,11 @@ import com.rbelchior.dicetask.ui.artist.search.mvi.ArtistSearchIntent
 import com.rbelchior.dicetask.ui.artist.search.mvi.ArtistSearchReducer
 import com.rbelchior.dicetask.ui.artist.search.mvi.ArtistSearchUiState
 import com.rbelchior.dicetask.ui.util.paginator.DefaultPaginator
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import logcat.logcat
 
 class ArtistSearchViewModel(
@@ -53,7 +53,7 @@ class ArtistSearchViewModel(
         onSuccess = { page, newKey ->
             reducer.sendEvent(
                 ArtistSearchEvent.SearchRequestSuccess(
-                    reducer.currentValue.artists + page.artists,
+                    reducer.currentValue.searchResults + page.artists,
                     page.artists.isEmpty(), newKey
                 )
             )
@@ -61,6 +61,13 @@ class ArtistSearchViewModel(
     )
 
     private var searchJob: Job? = null
+
+    init {
+        // Get the saved artists from db and listen to any updates that occur in the db.
+        repository.getSavedArtists()
+            .onEach { reducer.sendEvent(ArtistSearchEvent.SavedArtistsUpdated(it)) }
+            .launchIn(viewModelScope)
+    }
 
     /**
      * Main entry point into the ViewModel

@@ -14,17 +14,20 @@ data class Artist(
     val releaseGroups: List<ReleaseGroup>? = null,
     val isSaved: Boolean = false
 ) {
+    @kotlinx.serialization.Serializable
     data class Area(
         val id: String,
         val type: String,
         val name: String,
     )
 
+    @kotlinx.serialization.Serializable
     data class LifeSpan(
         val begin: String?,
         val ended: String?
     )
 
+    @kotlinx.serialization.Serializable
     data class Tag(
         val count: Int?,
         val name: String?

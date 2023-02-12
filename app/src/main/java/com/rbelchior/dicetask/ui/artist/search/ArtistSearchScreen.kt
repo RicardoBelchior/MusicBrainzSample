@@ -149,12 +149,12 @@ fun ArtistsList(
 
     // When fetching the next page, automatically scroll to the last element to see the loading indicator.
     // Note: animateScrollToItem would also work, but this way we're doing a smoother animation.
-    if (uiState.isLoading && uiState.artists.isNotEmpty()) {
+    if (uiState.shouldDisplaySnackbar) {
         val itemSize = 50.dp // Approx. assuming an item height of 50dp.
         val itemSizePx = with(LocalDensity.current) { itemSize.toPx() }
-        LaunchedEffect(uiState.artists.size) {
+        LaunchedEffect(uiState.searchResults.size) {
             listState.animateScrollBy(
-                value = itemSizePx * uiState.artists.size + 1,
+                value = itemSizePx * uiState.searchResults.size + 1,
                 animationSpec = tween(durationMillis = 1000)
             )
         }
@@ -166,17 +166,33 @@ fun ArtistsList(
             .semantics { contentDescription = "Artists list" },
         state = listState
     ) {
-        itemsIndexed(uiState.artists) { i, artist ->
-            if (i >= uiState.artists.size - 1 && !uiState.endReached && !uiState.isLoading) {
+
+        // Display search results
+        itemsIndexed(uiState.searchResults) { i, artist ->
+            if (i >= uiState.searchResults.size - 1 && uiState.shouldLoadMore) {
                 onLoadMore()
             }
             ArtistItem(artist, onArtistClicked)
 
             // Display divider between each item
-            if (i < uiState.artists.lastIndex) {
+            if (i < uiState.searchResults.lastIndex) {
                 Divider()
             }
         }
+
+        // Display saved artists
+        if (uiState.shouldDisplaySavedArtists) {
+            item { Text("Saved artists:") }
+            itemsIndexed(uiState.savedArtists) { i, artist ->
+                ArtistItem(artist, onArtistClicked)
+
+                // Display divider between each item
+                if (i < uiState.savedArtists.lastIndex) {
+                    Divider()
+                }
+            }
+        }
+        // Loading indicator
         item {
             if (uiState.isLoading) {
                 Row(
