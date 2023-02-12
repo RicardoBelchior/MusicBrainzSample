@@ -222,21 +222,22 @@ fun ArtistItem(modifier: Modifier, artist: Artist, onClick: (artist: Artist) -> 
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(16.dp)
             .clickable { onClick(artist) }
             .semantics { testTag = "Artist item" }
     ) {
-        Row {
+        Spacer(modifier = Modifier.height(16.dp))
+        Row(modifier = Modifier.padding(horizontal = 16.dp)) {
             ArtistIcon(artist.type, modifier = Modifier.padding(end = 8.dp))
             Text(text = artist.name)
         }
         Spacer(modifier = Modifier.height(8.dp))
-        Row {
+        Row(modifier = Modifier.padding(horizontal = 16.dp)) {
             Text(
                 text = artist.buildLabel(),
                 style = MaterialTheme.typography.bodySmall
             )
         }
+        Spacer(modifier = Modifier.height(16.dp))
     }
 }
 

@@ -1,6 +1,5 @@
 package com.rbelchior.dicetask.data.remote.musicbrainz.model
 
-import android.net.Uri
 import io.ktor.http.*
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
