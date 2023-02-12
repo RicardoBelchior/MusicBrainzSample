@@ -14,12 +14,12 @@ class ArtistSearchReducerTest {
     @Test
     fun test_UserQueryUpdated() {
         reducer.reduce(
-            ArtistSearchUiState("blabla", false, artistsList1, Throwable(), true, 9),
+            ArtistSearchUiState("blabla", false, artistsList1, emptyList(), Throwable(), true, 9),
             ArtistSearchEvent.UserQueryUpdated("coldplay")
         )
 
         reducer.currentValue shouldBe ArtistSearchUiState(
-            "coldplay", false, emptyList(), null, false, 0
+            "coldplay", false, emptyList(), emptyList(), null, false, 0
         )
     }
 

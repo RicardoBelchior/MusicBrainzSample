@@ -69,7 +69,7 @@ class DiceRepository(
     private fun saveReleaseGroups(artist: Artist):
             Flow<DataWrapper.DataState<Result<Artist>>> {
 
-        return fetchAndSavePartialData(
+        return fetchAndGetFromStorageFlow(
             { localDataSource.getArtist(artist.id) },
             { getReleaseGroups(artist) },
             { localDataSource.setReleaseGroups(artist.id, it.releaseGroups) }
@@ -79,7 +79,7 @@ class DiceRepository(
     private fun saveWikiDetails(artist: Artist):
             Flow<DataWrapper.DataState<Result<Artist>>> {
 
-        return fetchAndSavePartialData(
+        return fetchAndGetFromStorageFlow(
             { localDataSource.getArtist(artist.id) },
             { getWikiSummary(artist) },
             { localDataSource.setWikiDetails(artist.id, it.extract, it.thumbnailImage?.source) }

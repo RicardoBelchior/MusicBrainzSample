@@ -15,39 +15,21 @@ internal fun <D, DTO> warmDataWithCacheInitialAsFlow(
             emit(DataWrapper.CacheData(Result.success(it)))
         }
 
-        // Load data from network,
-        getRemoteData().let { result ->
-            if (result.isSuccess) {
-                setToLocalSource(result.getOrThrow())
-                getCacheData()?.let {
-                    emit(DataWrapper.LiveData(Result.success(it)))
-                }
-            } else {
-                emit(DataWrapper.Error(Result.failure(result.exceptionOrNull()!!)))
-            }
-        }
+        emit(
+            fetchAndGetFromStorage(
+                getCacheData, getRemoteData, setToLocalSource
+            )
+        )
     }
 }
 
-internal fun <D, DTO> fetchAndSavePartialData(
+internal fun <D, DTO> fetchAndGetFromStorageFlow(
     getCacheData: suspend () -> D?,
     getRemoteData: suspend () -> Result<DTO>,
     setToLocalSource: suspend (DTO) -> Unit,
 ): Flow<DataWrapper.DataState<Result<D>>> {
     return flow {
-
-        // Load data from network,
-        getRemoteData().let { result ->
-            // if success, save to storage, then emit value from storage
-            if (result.isSuccess) {
-                setToLocalSource(result.getOrThrow())
-                getCacheData()?.let {
-                    emit(DataWrapper.LiveData(Result.success(it)))
-                }
-            } else { // else emit DataWrapper<Error>
-                emit(DataWrapper.Error(Result.failure(result.exceptionOrNull()!!)))
-            }
-        }
+        emit(fetchAndGetFromStorage(getCacheData, getRemoteData, setToLocalSource))
     }
 }
 

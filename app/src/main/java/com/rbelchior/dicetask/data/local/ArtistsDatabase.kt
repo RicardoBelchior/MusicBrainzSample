@@ -18,6 +18,7 @@ import com.rbelchior.dicetask.data.local.entity.ArtistEntity
     exportSchema = true,
 )
 @TypeConverters(
+    // Type converters allow for simple transformations of data classes into strings
     AreaConverter::class,
     LifeSpanConverter::class,
     TagsConverter::class,

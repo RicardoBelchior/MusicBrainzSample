@@ -15,6 +15,9 @@ class DiceTaskApp : Application() {
         )
 
         startKoin()
+
+        // TODO: Schedule background task to remove unsaved artists from db
+        //  Either directly here on a background thread or using a JobScheduler or WorkManager.
     }
 
     private fun startKoin() {

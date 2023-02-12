@@ -46,9 +46,10 @@ class ArtistDtoMapperTest {
                         "1996-09", null
                     ),
                     listOf(
-                        Artist.Tag(5, "rock"),
                         Artist.Tag(11, "pop"),
+                        Artist.Tag(5, "rock"),
                     ),
+                    emptyList(),
                     null
                 ),
                 Artist(
@@ -66,6 +67,7 @@ class ArtistDtoMapperTest {
                         "2006", null
                     ),
                     emptyList(),
+                    emptyList(),
                     null
                 ),
                 Artist(
@@ -82,6 +84,7 @@ class ArtistDtoMapperTest {
                     Artist.LifeSpan(
                         null, null
                     ),
+                    emptyList(),
                     emptyList(),
                     null
                 )

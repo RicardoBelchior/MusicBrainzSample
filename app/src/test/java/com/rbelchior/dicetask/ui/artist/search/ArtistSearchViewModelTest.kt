@@ -9,6 +9,7 @@ import io.kotest.matchers.shouldBe
 import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.*
@@ -39,6 +40,8 @@ class ArtistSearchViewModelTest {
                 SearchArtistsResult(artists.size, 0, artists)
             )
         }
+        coEvery { repository.getSavedArtists() } coAnswers { flowOf(emptyList()) }
+
         viewModel = ArtistSearchViewModel(repository)
     }
 
