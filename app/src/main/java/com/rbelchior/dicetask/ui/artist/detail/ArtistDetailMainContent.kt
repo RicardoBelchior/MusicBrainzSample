@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
@@ -20,6 +21,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -27,6 +29,11 @@ import com.rbelchior.dicetask.R
 import com.rbelchior.dicetask.domain.Artist
 import com.rbelchior.dicetask.domain.ReleaseGroup
 import com.rbelchior.dicetask.ui.components.ArtistLabel
+
+private val tagShape = CutCornerShape(10.dp)
+private val albumImageShape = RoundedCornerShape(
+    topStart = 8.dp, topEnd = 8.dp, bottomStart = 0.dp, bottomEnd = 0.dp
+)
 
 @Composable
 fun ArtistDetailMainContent(artist: Artist) {
@@ -83,22 +90,7 @@ private fun ArtistAlbums(releaseGroups: List<ReleaseGroup>) {
 
         LazyRow {
             itemsIndexed(releaseGroups) { i, releaseGroup ->
-                ElevatedCard(modifier = Modifier.clickable {}) {
-                    AsyncImage(
-                        model = ImageRequest.Builder(LocalContext.current)
-                            .data(releaseGroup.thumbnailImageUrl)
-                            .crossfade(true)
-                            .build(),
-                        contentDescription = "Album image",
-                        contentScale = ContentScale.FillHeight,
-                        alignment = Alignment.Center,
-                        placeholder = painterResource(id = R.drawable.ic_album),
-                        fallback = painterResource(id = R.drawable.ic_album),
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(8.dp))
-                            .size(dimensionResource(id = R.dimen.album_detail_image_size))
-                    )
-                }
+                ArtistAlbum(releaseGroup)
 
                 // Display space between each item
                 if (i < releaseGroups.lastIndex) {
@@ -107,6 +99,45 @@ private fun ArtistAlbums(releaseGroups: List<ReleaseGroup>) {
             }
         }
         Spacer(modifier = Modifier.size(16.dp))
+    }
+}
+
+@Composable
+private fun ArtistAlbum(releaseGroup: ReleaseGroup) {
+    ElevatedCard(modifier = Modifier.clickable {}) {
+
+        Column(
+            Modifier.fillMaxSize()
+        ) {
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(releaseGroup.thumbnailImageUrl)
+                    .crossfade(true)
+                    .build(),
+                contentDescription = "Album image",
+                contentScale = ContentScale.FillHeight,
+                alignment = Alignment.Center,
+                placeholder = painterResource(id = R.drawable.ic_album),
+                fallback = painterResource(id = R.drawable.ic_album),
+                modifier = Modifier
+                    .clip(albumImageShape)
+                    .size(dimensionResource(id = R.dimen.album_detail_image_size))
+            )
+
+            Box(
+                Modifier
+                    .width(dimensionResource(id = R.dimen.album_detail_image_size))
+                    .padding(8.dp)
+            ) {
+                Text(
+                    text = releaseGroup.title,
+                    overflow = TextOverflow.Ellipsis,
+                    style = MaterialTheme.typography.bodySmall,
+                    maxLines = 1,
+                    modifier = Modifier.align(Alignment.Center)
+                )
+            }
+        }
     }
 }
 
@@ -131,7 +162,7 @@ private fun ArtistTags(artist: Artist) {
         itemsIndexed(tags) { i, tag ->
             AssistChip(
                 onClick = {},
-                shape = MaterialTheme.shapes.extraLarge,
+                shape = tagShape,
                 label = {
                     Text(
                         text = "#$tag",
@@ -166,7 +197,7 @@ private fun ArtistImage(imageUrl: String?) {
             placeholder = painterResource(id = R.drawable.ic_album),
             fallback = painterResource(id = R.drawable.ic_album),
             modifier = Modifier
-                .clip(RoundedCornerShape(8.dp))
+                .clip(MaterialTheme.shapes.small)
                 .size(dimensionResource(id = R.dimen.artist_detail_image_size))
         )
     }
