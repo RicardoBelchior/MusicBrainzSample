@@ -14,7 +14,7 @@ data class ArtistEntity(
     val isnis: List<String>,
     val lifeSpan: Artist.LifeSpan?,
     val tags: List<Artist.Tag>,
-    val relations: List<Artist.Relation>,
+    val relations: List<Artist.Relation>?,
     val wikiDescription: String?,
     val thumbnailImageUrl: String?,
     val isSaved: Boolean = false

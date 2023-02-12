@@ -14,5 +14,5 @@ internal val databaseModule = module {
     }
     single { get<ArtistsDatabase>().artistDao() }
     single { get<ArtistsDatabase>().albumDao() }
-    single<LocalDataSource> { LocalDataSourceImpl(get(), get(), get()) }
+    single<LocalDataSource> { LocalDataSourceImpl(get()) }
 }

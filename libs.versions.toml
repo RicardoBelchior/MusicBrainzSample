@@ -102,3 +102,4 @@ logcat = "com.squareup.logcat:logcat:0.1"
 
 mockk = "io.mockk:mockk:1.13.4"
 kotest-assertions = "io.kotest:kotest-assertions-core:5.5.5"
+turbine = "app.cash.turbine:turbine:0.12.1"

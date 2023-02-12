@@ -27,17 +27,18 @@ using [Coroutines and Kotlin Flow](https://kotlinlang.org/docs/coroutines-guide.
 Dependency injection is handled with [Koin](https://insert-koin.io/).
 
 The project includes a few unit and Espresso tests (`test/` and `androidTest/` using
-[Mockk](https://mockk.io/) and [Kotest](https://kotest.io/docs/assertions/assertions.html) 
-as helper libraries.
+[Mockk](https://mockk.io/), [Kotest](https://kotest.io/docs/assertions/assertions.html) and
+[Turbine](https://github.com/cashapp/turbine) as helper libraries.
 
-The project includes automated tests on the following layers:
+The project includes automated tests in the following layers:
 - UI:
   - Compose: Instrumented tests using the jetpack compose testing libraries
   - ViewModels: Pure unit tests, ensuring the correct ui states and passed to the composables and the repository is called accordingly
   - Reducer: Unit testing the MVI reducer
-- Data (unit tests):
-  - Mapper: Ensure the correct mapping between local/remote/domain layers
-  - Remote: Use Ktor testing APIs to ensure the JSON coming from the API is properly returned 
+- Data:
+  - Mapper: Pure unit tests ensuring the correct mapping between local/remote/domain layers
+  - Local: Instrumented unit tests using Room's in-memory DB
+  - Remote: Pure unit tests using Ktor testing APIs to ensure the JSON coming from the API is properly returned
   - Repository: (tbd)
 
 ## Demo

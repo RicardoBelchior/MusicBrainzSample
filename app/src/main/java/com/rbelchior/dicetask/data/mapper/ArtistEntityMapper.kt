@@ -25,7 +25,9 @@ fun ArtistEntity.toDomain(): Artist {
 fun ArtistWithAlbums.toDomain(): Artist {
     return artist
         .toDomain()
-        .copy(releaseGroups = albums.map { album -> album.toDomain() })
+        .copy(releaseGroups = albums
+            .map { album -> album.toDomain() }
+            .ifEmpty { null })
 }
 
 fun Artist.toEntity(): ArtistEntity {

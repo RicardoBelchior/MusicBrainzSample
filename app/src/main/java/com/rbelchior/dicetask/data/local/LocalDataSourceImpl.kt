@@ -12,9 +12,10 @@ import kotlinx.coroutines.flow.map
 
 class LocalDataSourceImpl(
     private val artistsDatabase: ArtistsDatabase,
-    private val artistDao: ArtistDao,
-    private val albumDao: AlbumDao
 ) : LocalDataSource {
+
+    private val artistDao: ArtistDao by lazy { artistsDatabase.artistDao() }
+    private val albumDao: AlbumDao by lazy { artistsDatabase.albumDao() }
 
     override fun getSavedArtists(): Flow<List<Artist>> {
         return artistDao

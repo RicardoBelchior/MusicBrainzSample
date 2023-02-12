@@ -97,6 +97,8 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation(libs.androidx.test.espressoCore)
     androidTestImplementation(libs.compose.ui.test.junit4)
+    androidTestImplementation(libs.kotest.assertions)
+    androidTestImplementation(libs.turbine)
     debugImplementation(libs.compose.ui.tooling)
     debugImplementation(libs.compose.ui.test.manifest)
 }

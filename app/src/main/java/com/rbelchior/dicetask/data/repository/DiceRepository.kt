@@ -88,7 +88,7 @@ class DiceRepository(
 
     private suspend fun getWikiSummary(artist: Artist): Result<WikiSummaryDto> {
         val firstWikiRelation = artist.relations
-            .firstOrNull { it.isTypeWikipedia || it.isTypeWikidata }
+            ?.firstOrNull { it.isTypeWikipedia || it.isTypeWikidata }
             ?: return Result.failure(IllegalArgumentException("Could not find wiki relations: $this"))
 
         val pageTitle = firstWikiRelation.pageTitle!!
