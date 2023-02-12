@@ -14,9 +14,11 @@ fun ArtistEntity.toDomain(): Artist {
         isnis,
         lifeSpan,
         tags,
+        relations,
         wikiDescription,
         thumbnailImageUrl,
-        emptyList()
+        isSaved,
+        emptyList(),
     )
 }
 
@@ -36,7 +38,9 @@ fun Artist.toEntity(): ArtistEntity {
         isnis,
         lifeSpan,
         tags,
+        relations,
         wikiDescription,
-        thumbnailImageUrl
+        thumbnailImageUrl,
+        isSaved
     )
 }

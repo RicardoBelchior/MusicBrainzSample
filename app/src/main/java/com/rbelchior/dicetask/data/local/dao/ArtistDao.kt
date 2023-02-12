@@ -11,10 +11,18 @@ import kotlinx.coroutines.flow.Flow
 interface ArtistDao : BaseDao<ArtistEntity> {
 
     @Transaction
-    @Query("SELECT * FROM ArtistEntity")
-    fun getUsersWithPlaylists(): Flow<List<ArtistWithAlbums>>
+    @Query("SELECT * FROM ArtistEntity WHERE isSaved = true")
+    fun getSavedArtists(): Flow<List<ArtistWithAlbums>>
 
     @Transaction
     @Query("SELECT * FROM ArtistEntity WHERE id = :id")
     suspend fun getById(id: String): ArtistWithAlbums?
+
+    @Query("UPDATE ArtistEntity SET isSaved = :isSaved WHERE id = :id")
+    suspend fun updateSavedArtist(id: String, isSaved: Boolean)
+
+    @Query(
+        "UPDATE ArtistEntity SET wikiDescription = :wikiDescription, thumbnailImageUrl = :thumbnailImageUrl WHERE id = :id"
+    )
+    suspend fun updateWikiDetails(id: String, wikiDescription: String?, thumbnailImageUrl: String?)
 }

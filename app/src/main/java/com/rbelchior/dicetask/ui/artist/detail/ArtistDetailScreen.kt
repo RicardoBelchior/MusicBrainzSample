@@ -39,6 +39,15 @@ fun ArtistDetailScreen(
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
     val scope = rememberCoroutineScope()
 
+    // In case an error exists, display it with a snackbar
+    uiState.value.throwable?.let {
+        LaunchedEffect(snackbarHostState, it) {
+            snackbarHostState.showSnackbar(
+                message = "Error: ${it.message ?: "unknown"}"
+            )
+        }
+    }
+
     ArtistDetailScreen(
         artistName,
         uiState.value,
@@ -47,7 +56,9 @@ fun ArtistDetailScreen(
             viewModel.toggleSavedArtist(it)
             scope.launch {
                 val messageSuffix = if (it.isSaved) " removed." else " saved."
-                snackbarHostState.showSnackbar(it.name + messageSuffix)
+                snackbarHostState.showSnackbar(
+                    message = it.name + messageSuffix,
+                    duration = SnackbarDuration.Short)
             }
         }
     )

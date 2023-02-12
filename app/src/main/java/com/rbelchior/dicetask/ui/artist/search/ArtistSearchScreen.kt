@@ -34,6 +34,7 @@ import com.rbelchior.dicetask.ui.artist.search.mvi.ArtistSearchIntent
 import com.rbelchior.dicetask.ui.artist.search.mvi.ArtistSearchUiState
 import org.koin.androidx.compose.koinViewModel
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun ArtistSearchScreen(
     navController: NavController,
@@ -42,9 +43,20 @@ fun ArtistSearchScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+    val keyboardController = LocalSoftwareKeyboardController.current
+
+    // In case an error exists, display it with a snackbar
+    uiState.throwable?.let {
+        LaunchedEffect(snackbarHostState, it) {
+            keyboardController?.hide()
+            snackbarHostState.showSnackbar(
+                message = "Error: ${it.message ?: "unknown"}"
+            )
+        }
+    }
+
     ArtistSearchScreen(
         uiState = uiState,
-        snackbarHostState = snackbarHostState,
         onValueChange = {
             viewModel.onIntent(ArtistSearchIntent.OnQueryUpdated(it))
         },
@@ -53,35 +65,20 @@ fun ArtistSearchScreen(
         },
         onLoadMore = {
             viewModel.onIntent(ArtistSearchIntent.OnLoadMoreItems)
-        },
-        onArtistClicked = {
-            navController.navigate(Screen.ArtistDetail.buildRoute(it.id, it.name))
         }
-    )
+    ) {
+        navController.navigate(Screen.ArtistDetail.buildRoute(it.id, it.name))
+    }
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun ArtistSearchScreen(
     uiState: ArtistSearchUiState,
-    snackbarHostState: SnackbarHostState,
     onValueChange: (String) -> Unit,
     onClearClicked: () -> Unit,
     onLoadMore: () -> Unit,
     onArtistClicked: (artist: Artist) -> Unit
 ) {
-    val keyboardController = LocalSoftwareKeyboardController.current
-
-    // In case it exists, display error in the snackbar
-    uiState.throwable?.let {
-        LaunchedEffect(snackbarHostState, uiState.throwable) {
-            keyboardController?.hide()
-            snackbarHostState.showSnackbar(
-                message = "Error: ${it.message ?: "unknown"}"
-            )
-        }
-    }
-
     Column(
         modifier = Modifier
             .padding(24.dp)
@@ -103,8 +100,8 @@ fun ArtistSearchScreenPreview(
     @PreviewParameter(ArtistSearchUiStatePreviewParameterProvider::class) uiState: ArtistSearchUiState
 ) {
     ArtistSearchScreen(
-        uiState, SnackbarHostState(), {}, {}, {}, {}
-    )
+        uiState, {}, {}, {}
+    ) {}
 }
 
 @Composable
@@ -149,7 +146,7 @@ fun ArtistsList(
 
     // When fetching the next page, automatically scroll to the last element to see the loading indicator.
     // Note: animateScrollToItem would also work, but this way we're doing a smoother animation.
-    if (uiState.shouldDisplaySnackbar) {
+    if (uiState.shouldAnimateScrollToBottom) {
         val itemSize = 50.dp // Approx. assuming an item height of 50dp.
         val itemSizePx = with(LocalDensity.current) { itemSize.toPx() }
         LaunchedEffect(uiState.searchResults.size) {

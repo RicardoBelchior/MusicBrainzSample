@@ -1,6 +1,7 @@
 package com.rbelchior.dicetask.data.local
 
 import com.rbelchior.dicetask.domain.Artist
+import com.rbelchior.dicetask.domain.ReleaseGroup
 import kotlinx.coroutines.flow.Flow
 
 interface LocalDataSource {
@@ -9,7 +10,11 @@ interface LocalDataSource {
 
     suspend fun getArtist(artistId: String): Artist?
 
-    suspend fun saveArtist(artist: Artist)
+    suspend fun insertArtist(artist: Artist)
 
-    suspend fun removeArtist(artist: Artist)
+    suspend fun setArtistSaved(artistId: String, isSaved: Boolean)
+
+    suspend fun setReleaseGroups(artistId: String, releaseGroups: List<ReleaseGroup>)
+
+    suspend fun setWikiDetails(artistId: String, wikiDescription: String?, thumbnailUrl: String?)
 }

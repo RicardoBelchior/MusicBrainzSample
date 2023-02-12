@@ -1,6 +1,5 @@
 package com.rbelchior.dicetask.ui.artist.detail.search
 
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
 import com.rbelchior.dicetask.ui.artist.search.ArtistFactory
@@ -71,7 +70,7 @@ class ArtistSearchScreenTest {
         startScreen(
             ArtistSearchUiState(
                 "Coldplay", false, artists,
-                null, false, 0
+                emptyList(), null, false, 0
             )
         )
 
@@ -84,8 +83,8 @@ class ArtistSearchScreenTest {
         composeTestRule.setContent {
             DiceTaskTheme {
                 ArtistSearchScreen(
-                    state, SnackbarHostState(), {}, {}, {}, {}
-                )
+                    state, {}, {}, {}
+                ) {}
             }
         }
     }

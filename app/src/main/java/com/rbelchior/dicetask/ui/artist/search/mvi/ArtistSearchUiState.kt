@@ -13,7 +13,7 @@ data class ArtistSearchUiState(
     val offset: Int
 ) : UiState {
 
-    val shouldDisplaySnackbar = isLoading && searchResults.isNotEmpty()
+    val shouldAnimateScrollToBottom = isLoading && searchResults.isNotEmpty()
 
     val shouldDisplaySavedArtists = savedArtists.isNotEmpty() && !isLoading && query.isEmpty()
 

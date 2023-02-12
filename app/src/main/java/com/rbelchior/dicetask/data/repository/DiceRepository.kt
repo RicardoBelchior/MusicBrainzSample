@@ -1,24 +1,22 @@
+@file:OptIn(FlowPreview::class)
+
 package com.rbelchior.dicetask.data.repository
 
 import com.rbelchior.dicetask.data.local.LocalDataSource
 import com.rbelchior.dicetask.data.mapper.toDomain
 import com.rbelchior.dicetask.data.remote.musicbrainz.MusicBrainzRemoteDataSource
-import com.rbelchior.dicetask.data.remote.musicbrainz.model.ArtistDto
 import com.rbelchior.dicetask.data.remote.wiki.WikiRemoteDataSource
 import com.rbelchior.dicetask.data.remote.wiki.model.WikiSummaryDto
 import com.rbelchior.dicetask.domain.Artist
 import com.rbelchior.dicetask.domain.ReleaseGroupsResult
 import com.rbelchior.dicetask.domain.SearchArtistsResult
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.FlowCollector
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.*
 
 class DiceRepository(
     private val musicBrainzRemoteDataSource: MusicBrainzRemoteDataSource,
     private val wikiRemoteDataSource: WikiRemoteDataSource,
-    private val localDataSource: LocalDataSource,
-    private val defaultDispatcher: CoroutineDispatcher = Dispatchers.Default
+    private val localDataSource: LocalDataSource
 ) {
 
     suspend fun searchArtist(
@@ -30,65 +28,67 @@ class DiceRepository(
     }
 
     fun getArtistDetails(artistId: String): Flow<Result<Artist>> {
-        return flow {
+        return warmDataWithCacheInitialAsFlow(
+            getCacheData = { localDataSource.getArtist(artistId) },
+            getRemoteData = { musicBrainzRemoteDataSource.lookupArtist(artistId) },
+            setToLocalSource = { localDataSource.insertArtist(it.toDomain()) }
+        ).flatMapMerge { fetchExtraDetails(it) }.map { it.data }
+    }
 
-            val artistFromDb = localDataSource.getArtist(artistId)
-            if (artistFromDb != null) {
-                emit(Result.success(artistFromDb))
-            }
-            val isSaved = artistFromDb != null
-
-            // Emit value when result comes from the MusicBrainz API
-            val artistDtoResult = musicBrainzRemoteDataSource
-                .lookupArtist(artistId)
-                .onSuccess { emit(Result.success(it.toDomain().copy(isSaved = isSaved))) }
-                .onFailure { emit(Result.failure(it)) }
-
-            val artistDto = artistDtoResult.getOrNull() ?: return@flow
-
-            // In parallel, get the wikipedia description and list of albums
-            coroutineScope {
-                listOf(
-                    async(defaultDispatcher) { artistDto.updateWithDescription() },
-                    async(defaultDispatcher) { artistDto.updateWithReleaseGroups() }
-                ).awaitAll().let {
-                    mergeArtist(it[0], it[1], isSaved)
-                }
-            }
+    /**
+     * If the last emission was coming from the network, then this method will also request,
+     * in parallel, the artist's albums and wiki details.
+     */
+    private fun fetchExtraDetails(data: DataWrapper.DataState<Result<Artist>>) =
+        if (data is DataWrapper.LiveData && data.data.isSuccess) {
+            fetchExtraDetails(data.data.getOrThrow())
+        } else {
+            flowOf(data)
         }
+
+    private fun fetchExtraDetails(artist: Artist): Flow<DataWrapper.DataState<Result<Artist>>> {
+        return merge(
+            flowOf(DataWrapper.LiveData(Result.success(artist))),
+            saveWikiDetails(artist),
+            saveReleaseGroups(artist)
+        )
     }
 
     fun getSavedArtists(): Flow<List<Artist>> {
         return localDataSource.getSavedArtists()
     }
 
-    suspend fun saveArtist(artist: Artist) {
-        localDataSource.saveArtist(artist)
+    suspend fun toggleArtistSaved(artist: Artist) {
+        localDataSource.setArtistSaved(artist.id, !artist.isSaved)
     }
 
-    suspend fun removeArtist(artist: Artist) {
-        localDataSource.removeArtist(artist)
+    private suspend fun getReleaseGroups(artist: Artist): Result<ReleaseGroupsResult> {
+        return musicBrainzRemoteDataSource.lookupAlbums(artist.id).map { it.toDomain() }
     }
 
-    private suspend fun ArtistDto.updateWithDescription(): Result<Artist> {
-        return this.getWikiSummary().map {
-            this.toDomain().copy(
-                wikiDescription = it.extract,
-                thumbnailImageUrl = it.thumbnailImage?.source
-            )
-        }
+    private fun saveReleaseGroups(artist: Artist):
+            Flow<DataWrapper.DataState<Result<Artist>>> {
+
+        return fetchAndSavePartialData(
+            { localDataSource.getArtist(artist.id) },
+            { getReleaseGroups(artist) },
+            { localDataSource.setReleaseGroups(artist.id, it.releaseGroups) }
+        )
     }
 
-    private suspend fun ArtistDto.updateWithReleaseGroups(): Result<Artist> {
-        return getReleaseGroups(id).map { this.toDomain().copy(releaseGroups = it.releaseGroups) }
+    private fun saveWikiDetails(artist: Artist):
+            Flow<DataWrapper.DataState<Result<Artist>>> {
+
+        return fetchAndSavePartialData(
+            { localDataSource.getArtist(artist.id) },
+            { getWikiSummary(artist) },
+            { localDataSource.setWikiDetails(artist.id, it.extract, it.thumbnailImage?.source) }
+        )
     }
 
-    private suspend fun getReleaseGroups(artistId: String): Result<ReleaseGroupsResult> {
-        return musicBrainzRemoteDataSource.lookupAlbums(artistId).map { it.toDomain() }
-    }
-
-    private suspend fun ArtistDto.getWikiSummary(): Result<WikiSummaryDto> {
-        val firstWikiRelation = relations?.firstOrNull { it.isTypeWikipedia || it.isTypeWikidata }
+    private suspend fun getWikiSummary(artist: Artist): Result<WikiSummaryDto> {
+        val firstWikiRelation = artist.relations
+            .firstOrNull { it.isTypeWikipedia || it.isTypeWikidata }
             ?: return Result.failure(IllegalArgumentException("Could not find wiki relations: $this"))
 
         val pageTitle = firstWikiRelation.pageTitle!!
@@ -107,35 +107,4 @@ class DiceRepository(
     private suspend fun getWikipediaSummary(pageTitle: String) =
         wikiRemoteDataSource.getWikipediaSummary(pageTitle)
 
-
-    // Not very pretty but working code, merging description and albums into a single artist
-    private suspend fun FlowCollector<Result<Artist>>.mergeArtist(
-        artistWithDescriptionResult: Result<Artist>,
-        artistWithReleaseGroupsResult: Result<Artist>,
-        isSaved: Boolean
-    ) {
-        val artistWithDescription = artistWithDescriptionResult
-            .onFailure { emit(Result.failure(it)) }
-            .getOrNull()
-
-        val artistWithReleaseGroups = artistWithReleaseGroupsResult
-            .onFailure { emit(Result.failure(it)) }
-            .getOrNull()
-
-        if (artistWithDescription == null && artistWithReleaseGroups == null) {
-            return
-        }
-
-        val mergedArtist =
-            artistWithDescription?.copy(
-                releaseGroups = artistWithReleaseGroups?.releaseGroups,
-                isSaved = isSaved
-            ) ?: artistWithReleaseGroups?.copy(
-                wikiDescription = artistWithDescription?.wikiDescription,
-                thumbnailImageUrl = artistWithDescription?.thumbnailImageUrl,
-                isSaved = isSaved
-            )
-
-        mergedArtist?.let { emit(Result.success(it)) }
-    }
 }

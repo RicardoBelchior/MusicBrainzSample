@@ -9,6 +9,8 @@ import androidx.room.PrimaryKey
         entity = ArtistEntity::class,
         parentColumns = arrayOf("id"),
         childColumns = arrayOf("artistId"),
+        // When an Artist is deleted, using ON CASCADE ensures that SQLite will automatically
+        // delete all corresponding albums
         onDelete = ForeignKey.CASCADE
     )]
 )

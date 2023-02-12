@@ -14,7 +14,8 @@ class ArtistDetailViewModel(
 ) : ViewModel() {
 
     data class UiState(
-        val artist: Artist? = null
+        val artist: Artist? = null,
+        val throwable: Throwable? = null
     )
 
     private val _uiState = MutableStateFlow(UiState())
@@ -27,19 +28,22 @@ class ArtistDetailViewModel(
 
     init {
         repository.getArtistDetails(artistId)
-            .mapNotNull { it.getOrNull() }
-            .onEach { artist -> _uiState.update { it.copy(artist = artist) } }
+            .onEach { result ->
+                if (result.isSuccess) {
+                    _uiState.update { it.copy(
+                        artist = result.getOrThrow(),
+                        throwable = result.exceptionOrNull()
+                    ) }
+                } else {
+                    _uiState.update { it.copy(throwable = result.exceptionOrNull()) }
+                }
+            }
             .launchIn(viewModelScope)
-
     }
 
     fun toggleSavedArtist(artist: Artist) {
         viewModelScope.launch {
-            if (artist.isSaved) {
-                repository.removeArtist(artist)
-            } else {
-                repository.saveArtist(artist)
-            }
+            repository.toggleArtistSaved(artist)
         }
         _uiState.update {
             it.copy(

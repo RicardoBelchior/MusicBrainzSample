@@ -15,21 +15,21 @@ internal object ArtistFactory {
             Artist.Area("pt", "country", "Portugal"),
             Artist.Area("area", "city", "London"),
             emptyList(),
-            Artist.LifeSpan("1996-12", null), emptyList(), null
+            Artist.LifeSpan("1996-12", null), emptyList(), emptyList(), null
         ),
         Artist(
             "id-2", "P!nk", Artist.Type.PERSON,
             null,
             null,
             emptyList(),
-            Artist.LifeSpan("1996-12", null), emptyList(), null
+            Artist.LifeSpan("1996-12", null), emptyList(), emptyList(), null
         ),
         Artist(
             "id-3", "Fancy Orchestra", Artist.Type.ORCHESTRA,
             Artist.Area("uk", "country", "UK"),
             null,
             emptyList(),
-            null, emptyList(), null
+            null, emptyList(), emptyList(), null
         )
     )
 

@@ -1,5 +1,7 @@
 package com.rbelchior.dicetask.domain
 
+import android.net.Uri
+
 data class Artist(
     val id: String,
     val name: String,
@@ -9,10 +11,11 @@ data class Artist(
     val isnis: List<String>,
     val lifeSpan: LifeSpan?,
     val tags: List<Tag>,
+    val relations: List<Relation>,
     val wikiDescription: String? = null,
     val thumbnailImageUrl: String? = null,
+    val isSaved: Boolean = false,
     val releaseGroups: List<ReleaseGroup>? = null,
-    val isSaved: Boolean = false
 ) {
     @kotlinx.serialization.Serializable
     data class Area(
@@ -32,6 +35,23 @@ data class Artist(
         val count: Int?,
         val name: String?
     )
+
+    @kotlinx.serialization.Serializable
+    data class Relation(
+        val type: String?,
+        val url: String?,
+    ) {
+        // Hardcoded strings coming from the MusicBrainz API, which is a small violation of the
+        // principle of separation of concerns.
+        // A better approach would be to provide them as an enum/sealed class in the domain layer.
+        val isTypeWikipedia: Boolean = type == "wikipedia"
+        val isTypeWikidata: Boolean = type == "wikidata"
+
+        val pageTitle: String?
+            get() {
+                return Uri.parse(url).lastPathSegment
+            }
+    }
 
     enum class Type(
         /**

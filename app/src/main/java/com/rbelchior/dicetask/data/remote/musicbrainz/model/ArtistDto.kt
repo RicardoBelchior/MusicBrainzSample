@@ -44,15 +44,7 @@ data class ArtistDto(
     data class RelationDto(
         val type: String?,
         val url: UrlDto?,
-    ) {
-        val isTypeWikipedia: Boolean = type == "wikipedia"
-        val isTypeWikidata: Boolean = type == "wikidata"
-
-        val pageTitle: String?
-            get() {
-                return Uri.parse(url?.resource).lastPathSegment
-            }
-    }
+    )
 
     @Serializable
     data class UrlDto(
