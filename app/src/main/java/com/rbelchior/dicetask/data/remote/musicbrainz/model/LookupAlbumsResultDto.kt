@@ -17,8 +17,10 @@ data class LookupAlbumsResultDto(
     data class ReleaseGroupDto(
         val id: String,
         val title: String,
+        @SerialName("primary-type")
         val primaryType: String?,
-        val secondaryType: String?,
+        @SerialName("secondary-types")
+        val secondaryTypes: List<String>?,
         @SerialName("first-release-date")
         val firstReleaseDate: String?
     )

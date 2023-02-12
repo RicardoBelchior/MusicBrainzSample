@@ -31,12 +31,15 @@ import com.rbelchior.dicetask.domain.ReleaseGroup
 import com.rbelchior.dicetask.ui.components.ArtistLabel
 
 private val tagShape = CutCornerShape(10.dp)
-private val albumImageShape = RoundedCornerShape(
+val albumImageShape = RoundedCornerShape(
     topStart = 8.dp, topEnd = 8.dp, bottomStart = 0.dp, bottomEnd = 0.dp
 )
 
 @Composable
-fun ArtistDetailMainContent(artist: Artist) {
+fun ArtistDetailMainContent(
+    artist: Artist,
+    onAlbumClicked: (ReleaseGroup) -> Unit
+) {
     Column(
         modifier = Modifier
             .padding(horizontal = 24.dp)
@@ -53,7 +56,7 @@ fun ArtistDetailMainContent(artist: Artist) {
         Spacer(modifier = Modifier.size(8.dp))
 
         if (artist.releaseGroups?.isNotEmpty() == true) {
-            ArtistAlbums(artist.releaseGroups)
+            ArtistAlbums(artist.releaseGroups, onAlbumClicked)
         }
 
         AnimatedVisibility(visible = artist.wikiDescription != null) {
@@ -78,7 +81,10 @@ private fun ArtistDescription(wikiDescription: String) {
 }
 
 @Composable
-private fun ArtistAlbums(releaseGroups: List<ReleaseGroup>) {
+private fun ArtistAlbums(
+    releaseGroups: List<ReleaseGroup>,
+    onAlbumClicked: (ReleaseGroup) -> Unit
+) {
     Column {
         Text(
             text = stringResource(id = R.string.detail_screen_albums),
@@ -90,7 +96,7 @@ private fun ArtistAlbums(releaseGroups: List<ReleaseGroup>) {
 
         LazyRow {
             itemsIndexed(releaseGroups) { i, releaseGroup ->
-                ArtistAlbum(releaseGroup)
+                ArtistAlbum(releaseGroup, onAlbumClicked)
 
                 // Display space between each item
                 if (i < releaseGroups.lastIndex) {
@@ -103,8 +109,10 @@ private fun ArtistAlbums(releaseGroups: List<ReleaseGroup>) {
 }
 
 @Composable
-private fun ArtistAlbum(releaseGroup: ReleaseGroup) {
-    ElevatedCard(modifier = Modifier.clickable {}) {
+private fun ArtistAlbum(releaseGroup: ReleaseGroup, onAlbumClicked: (ReleaseGroup) -> Unit) {
+    ElevatedCard(
+        modifier = Modifier.clickable { onAlbumClicked(releaseGroup) }
+    ) {
 
         Column(
             Modifier.fillMaxSize()

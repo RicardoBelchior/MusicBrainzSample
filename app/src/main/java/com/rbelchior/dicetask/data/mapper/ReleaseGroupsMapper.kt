@@ -16,7 +16,7 @@ fun LookupAlbumsResultDto.ReleaseGroupDto.toDomain(): ReleaseGroup {
         id,
         title,
         primaryType,
-        secondaryType,
+        secondaryTypes,
         firstReleaseDate,
         "https://coverartarchive.org/release-group/${id}/front-250"
     )

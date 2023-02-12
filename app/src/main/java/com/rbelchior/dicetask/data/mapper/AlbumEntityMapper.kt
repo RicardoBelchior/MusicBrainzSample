@@ -8,7 +8,7 @@ fun AlbumEntity.toDomain(): ReleaseGroup {
         id,
         title,
         primaryType,
-        secondaryType,
+        secondaryTypes,
         firstReleaseDate,
         thumbnailImageUrl
     )
@@ -19,7 +19,7 @@ fun ReleaseGroup.toEntity(artistId: String): AlbumEntity {
         id,
         title,
         primaryType,
-        secondaryType,
+        secondaryTypes,
         firstReleaseDate,
         thumbnailImageUrl,
         artistId

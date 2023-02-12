@@ -18,7 +18,7 @@ data class AlbumEntity(
     @PrimaryKey val id: String,
     val title: String,
     val primaryType: String?,
-    val secondaryType: String?,
+    val secondaryTypes: List<String>?,
     val firstReleaseDate: String?,
     val thumbnailImageUrl: String?,
 

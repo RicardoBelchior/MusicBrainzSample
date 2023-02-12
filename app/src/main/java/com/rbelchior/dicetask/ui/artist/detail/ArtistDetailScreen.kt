@@ -9,6 +9,7 @@ import androidx.compose.runtime.*
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.rbelchior.dicetask.domain.Artist
+import com.rbelchior.dicetask.domain.ReleaseGroup
 import com.rbelchior.dicetask.ui.components.AnimatedIconToggleButton
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
@@ -24,6 +25,7 @@ fun ArtistDetailScreen(
 ) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
     val scope = rememberCoroutineScope()
+    val albumDialogOpened: MutableState<ReleaseGroup?> = remember { mutableStateOf(null) }
 
     // In case an error exists, display it with a snackbar
     uiState.value.throwable?.let {
@@ -32,6 +34,11 @@ fun ArtistDetailScreen(
                 message = "Error: ${it.message ?: "unknown"}"
             )
         }
+    }
+
+    // Display album dialog, when needed
+    albumDialogOpened.value?.let {
+        AlbumDetailsDialog(releaseGroup = it) { albumDialogOpened.value = null }
     }
 
     ArtistDetailScreen(
@@ -47,7 +54,8 @@ fun ArtistDetailScreen(
                     duration = SnackbarDuration.Short
                 )
             }
-        }
+        },
+        { albumDialogOpened.value = it }
     )
 }
 
@@ -57,12 +65,13 @@ fun ArtistDetailScreen(
     uiState: ArtistDetailUiState,
     onBackButtonClicked: () -> Unit,
     onSaveArtistClicked: (Artist) -> Unit,
+    onAlbumClicked: (ReleaseGroup) -> Unit
 ) {
     Column {
         ArtistDetailTopBar(artistName, uiState, onBackButtonClicked, onSaveArtistClicked)
 
         uiState.artist?.let {
-            ArtistDetailMainContent(it)
+            ArtistDetailMainContent(it, onAlbumClicked)
         }
     }
 }
