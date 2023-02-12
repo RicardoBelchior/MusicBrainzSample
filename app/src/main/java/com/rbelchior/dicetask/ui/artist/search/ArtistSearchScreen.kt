@@ -13,15 +13,12 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.outlined.Face
-import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -36,6 +33,8 @@ import com.rbelchior.dicetask.domain.Artist
 import com.rbelchior.dicetask.ui.Screen
 import com.rbelchior.dicetask.ui.artist.search.mvi.ArtistSearchIntent
 import com.rbelchior.dicetask.ui.artist.search.mvi.ArtistSearchUiState
+import com.rbelchior.dicetask.ui.components.ArtistIcon
+import com.rbelchior.dicetask.ui.components.ArtistLabel
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -85,11 +84,11 @@ fun ArtistSearchScreen(
 ) {
     Column(
         modifier = Modifier
-            .padding(24.dp)
+            .padding(horizontal = 24.dp)
             .fillMaxWidth()
     ) {
         Text(
-            text = "Hello Dice",
+            text = stringResource(id = R.string.search_screen_title),
             style = MaterialTheme.typography.displaySmall
         )
         Spacer(modifier = Modifier.size(24.dp))
@@ -124,7 +123,7 @@ private fun ArtistsTextInput(
         textStyle = MaterialTheme.typography.bodyLarge,
         placeholder = {
             Text(
-                text = "Search artists...",
+                text = stringResource(id = R.string.search_screen_input_placeholder),
                 modifier = Modifier.semantics { contentDescription = "Search artists placeholder" })
         },
         trailingIcon = {
@@ -133,7 +132,7 @@ private fun ArtistsTextInput(
             ) {
                 Icon(
                     imageVector = Icons.Filled.Clear,
-                    contentDescription = "Clear icon"
+                    contentDescription = stringResource(id = R.string.content_description_clear)
                 )
             }
         }
@@ -186,7 +185,7 @@ fun ArtistsList(
         item {
             AnimatedVisibility(visible = uiState.shouldDisplaySavedArtists) {
                 Text(
-                    "Saved artists:",
+                    stringResource(id = R.string.search_screen_saved_artists),
                     modifier = Modifier.padding(top = 16.dp),
                     style = MaterialTheme.typography.labelLarge
                 )
@@ -232,10 +231,7 @@ fun ArtistItem(modifier: Modifier, artist: Artist, onClick: (artist: Artist) -> 
         }
         Spacer(modifier = Modifier.height(8.dp))
         Row(modifier = Modifier.padding(horizontal = 16.dp)) {
-            Text(
-                text = artist.buildLabel(),
-                style = MaterialTheme.typography.bodySmall
-            )
+            ArtistLabel(artist, MaterialTheme.typography.bodySmall)
         }
         Spacer(modifier = Modifier.height(16.dp))
     }
@@ -249,56 +245,3 @@ fun ArtistItemPreview(
     ArtistItem(Modifier, artist) {}
 }
 
-private fun Artist.buildLabel() = buildString {
-    append(type.value)
-    area?.name?.let {
-        append(" from $it")
-    }
-    lifeSpan?.begin?.let {
-        area?.name?.let {
-            append(",")
-        }
-        if (type == Artist.Type.PERSON) {
-            append(" born in: $it")
-        } else {
-            append(" founded in: $it")
-        }
-    }
-}
-
-@Composable
-fun ArtistIcon(artistType: Artist.Type, modifier: Modifier) {
-    when (artistType) {
-        Artist.Type.PERSON -> Icon(
-            Icons.Outlined.Person,
-            stringResource(id = R.string.content_description_person),
-            modifier,
-        )
-        Artist.Type.GROUP -> Icon(
-            painterResource(id = R.drawable.ic_groups),
-            stringResource(id = R.string.content_description_group),
-            modifier,
-        )
-        Artist.Type.ORCHESTRA -> Icon(
-            painterResource(id = R.drawable.ic_piano),
-            stringResource(id = R.string.content_description_orchestra),
-            modifier,
-        )
-        Artist.Type.CHOIR -> Icon(
-            painterResource(id = R.drawable.ic_music_note),
-            stringResource(id = R.string.content_description_choir),
-            modifier,
-        )
-        Artist.Type.CHARACTER -> Icon(
-            Icons.Outlined.Face,
-            stringResource(id = R.string.content_description_character),
-            modifier,
-        )
-        Artist.Type.OTHER -> Icon(
-            painterResource(id = R.drawable.ic_library_music),
-            stringResource(id = R.string.content_description_other),
-            modifier,
-        )
-        Artist.Type.UNKNOWN -> {}
-    }
-}

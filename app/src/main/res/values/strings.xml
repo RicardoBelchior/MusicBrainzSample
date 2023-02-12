@@ -1,9 +1,17 @@
 <resources>
     <string name="app_name">DiceTask</string>
+    <string name="search_screen_title">Hello Dice</string>
+    <string name="search_screen_input_placeholder">Search artists…</string>
+    <string name="search_screen_saved_artists">Saved artists:</string>
+
+    <string name="detail_screen_description">Description:</string>
+    <string name="detail_screen_albums">Albums:</string>
+
     <string name="content_description_person">Person icon</string>
     <string name="content_description_group">Group icon</string>
     <string name="content_description_orchestra">Orchestra icon</string>
     <string name="content_description_choir">Choir icon</string>
     <string name="content_description_character">Character icon</string>
     <string name="content_description_other">Other icon</string>
+    <string name="content_description_clear">Clear icon</string>
 </resources>

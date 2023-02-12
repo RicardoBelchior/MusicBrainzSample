@@ -23,7 +23,8 @@ fun ArtistDto.toDomain(): Artist {
             Artist.LifeSpan(it.begin, it.ended)
         },
         tags
-            ?.map { Artist.Tag(it.count, it.name) }
+            ?.filter { it.name != null }
+            ?.map { Artist.Tag(it.count ?: 0, it.name!!) }
             ?.sortedByDescending { it.count }?.take(5) // Take only the 5 most relevant tags
             ?: emptyList(),
         relations

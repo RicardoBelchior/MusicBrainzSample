@@ -32,8 +32,8 @@ data class Artist(
 
     @kotlinx.serialization.Serializable
     data class Tag(
-        val count: Int?,
-        val name: String?
+        val count: Int,
+        val name: String
     )
 
     @kotlinx.serialization.Serializable
