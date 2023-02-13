@@ -1,5 +1,3 @@
-@file:OptIn(FlowPreview::class)
-
 package com.rbelchior.dicetask.data.repository
 
 import com.rbelchior.dicetask.data.local.LocalDataSource
@@ -14,6 +12,7 @@ import com.rbelchior.dicetask.domain.SearchArtistsResult
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 
+@OptIn(FlowPreview::class)
 class DiceRepository(
     private val musicBrainzRemoteDataSource: MusicBrainzRemoteDataSource,
     private val wikiRemoteDataSource: WikiRemoteDataSource,

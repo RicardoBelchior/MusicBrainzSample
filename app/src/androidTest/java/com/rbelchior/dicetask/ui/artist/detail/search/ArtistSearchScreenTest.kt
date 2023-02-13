@@ -33,7 +33,7 @@ class ArtistSearchScreenTest {
         composeTestRule
             .onNodeWithContentDescription("Search artists placeholder", useUnmergedTree = true)
             .assertIsDisplayed()
-            .assertTextEquals("Search artists...")
+            .assertTextEquals("Search artists…")
 
         composeTestRule.onNodeWithContentDescription("Artists list")
             .onChildren()
