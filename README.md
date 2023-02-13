@@ -1,4 +1,4 @@
-# Dice Task
+# Music Brainz Sample App
 
 Sample app reading from the official [MusicBrainz API](https://musicbrainz.org/doc/MusicBrainz_API#Search), 
 containing the following features:
@@ -92,4 +92,8 @@ analysis and also running the unit and instrumented tests.
 
 ## Demo
 
-...
+- [Demo](https://www.loom.com/share/e190f4627feb4c2297865df77176eaea)
+- [Image #1](demo/demo-1.png)
+- [Image #2](demo/demo-2.png)
+- [Image #3](demo/demo-3.png)
+- [Image #4](demo/demo-4.png)

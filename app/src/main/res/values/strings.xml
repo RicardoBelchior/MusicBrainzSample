@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">DiceTask</string>
-    <string name="search_screen_title">Hello Dice</string>
+    <string name="app_name">Music Brainz</string>
+    <string name="search_screen_title">Music Brainz</string>
     <string name="search_screen_input_placeholder">Search artists…</string>
     <string name="search_screen_saved_artists">Saved artists:</string>
 

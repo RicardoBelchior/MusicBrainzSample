@@ -22,7 +22,7 @@ class ArtistSearchScreenTest {
     fun when_launch_should_display_initial_state() {
         startScreen(ArtistSearchUiState.DEFAULT)
 
-        composeTestRule.onNodeWithText("Hello Dice")
+        composeTestRule.onNodeWithText("Music Brainz")
             .assertIsDisplayed()
 
         composeTestRule
@@ -56,7 +56,7 @@ class ArtistSearchScreenTest {
             .onNodeWithContentDescription("Search artists input", useUnmergedTree = true)
             .assertTextEquals("")
 
-        composeTestRule.onNodeWithText("Hello Dice").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Music Brainz").assertIsDisplayed()
         composeTestRule.onNodeWithContentDescription("Search artists input").assertIsDisplayed()
         composeTestRule.onNodeWithContentDescription("Artists list")
             .onChildren()
