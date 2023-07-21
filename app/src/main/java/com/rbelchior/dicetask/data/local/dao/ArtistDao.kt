@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 interface ArtistDao : BaseDao<ArtistEntity> {
 
     @Transaction
-    @Query("SELECT * FROM ArtistEntity WHERE isSaved = true ORDER BY name")
+    @Query("SELECT * FROM ArtistEntity WHERE isSaved = 1 ORDER BY name")
     fun getSavedArtists(): Flow<List<ArtistWithAlbums>>
 
     @Transaction
