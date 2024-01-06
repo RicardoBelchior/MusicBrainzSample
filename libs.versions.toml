@@ -1,21 +1,21 @@
 [versions]
 
 compose = "1.5.4"
-composeCompiler = "1.5.4"
+composeCompiler = "1.5.7"
 composeMaterial3 = "1.1.2"
 composesnapshot = "-" # a single character = no snapshot
 
-gradlePlugin = "8.1.4"
+gradlePlugin = "8.2.0"
 lintMinCompose = "30.0.0"
 
-kotlin = "1.9.20"
+kotlin = "1.9.21"
 coroutines = "1.7.3"
 coil = "2.5.0"
 ksp = "1.9.20-1.0.14"
-room = "2.6.0"
+room = "2.6.1"
 
 androidxtest = "1.5.0"
-androidxnavigation = "2.7.5"
+androidxnavigation = "2.7.6"
 androidxWindow = "1.2.0"
 
 ktor = "2.2.3"
@@ -34,7 +34,7 @@ compose-material-iconsext = { module = "androidx.compose.material:material-icons
 compose-material3-material3 = { module = "androidx.compose.material3:material3", version.ref = "composeMaterial3" }
 compose-animation-animation = { module = "androidx.compose.animation:animation", version.ref = "compose" }
 
-navigation-compose = "androidx.navigation:navigation-compose:2.7.5"
+navigation-compose = "androidx.navigation:navigation-compose:2.7.6"
 
 android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "gradlePlugin" }
 gradleMavenPublishPlugin = "com.vanniktech:gradle-maven-publish-plugin:0.17.0"
@@ -57,12 +57,12 @@ coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 
 androidx-appcompat = "androidx.appcompat:appcompat:1.6.1"
 androidx-core = "androidx.core:core-ktx:1.12.0"
-androidx-activity-compose = "androidx.activity:activity-compose:1.8.1"
+androidx-activity-compose = "androidx.activity:activity-compose:1.8.2"
 androidx-fragment = "androidx.fragment:fragment-ktx:1.6.2"
 androidx-dynamicanimation = "androidx.dynamicanimation:dynamicanimation-ktx:1.0.0-alpha03"
 androidx-lifecycle-runtime = "androidx.lifecycle:lifecycle-runtime-ktx:2.6.2"
-androidx-lifecycle-runtime-compose = "androidx.lifecycle:lifecycle-runtime-compose:2.7.0-rc01"
-androidx-lifecycle-viewmodel-compose = "androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0-rc01"
+androidx-lifecycle-runtime-compose = "androidx.lifecycle:lifecycle-runtime-compose:2.7.0-rc02"
+androidx-lifecycle-viewmodel-compose = "androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0-rc02"
 androidx-window = { module = "androidx.window:window", version.ref = "androidxWindow" }
 androidx-window-testing = { module = "androidx.window:window-testing", version.ref = "androidxWindow" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
@@ -72,10 +72,10 @@ androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "androidxnavigation" }
 androidx-navigation-testing = { module = "androidx.navigation:navigation-testing", version.ref = "androidxnavigation" }
 
-mdc = "com.google.android.material:material:1.10.0"
+mdc = "com.google.android.material:material:1.11.0"
 
-androidx-test-core = "androidx.test:core-ktx:1.6.0-alpha02"
-androidx-test-runner = "androidx.test:runner:1.6.0-alpha04"
+androidx-test-core = "androidx.test:core-ktx:1.6.0-alpha04"
+androidx-test-runner = "androidx.test:runner:1.6.0-alpha05"
 androidx-test-rules = { module = "androidx.test:rules", version.ref = "androidxtest" }
 androidx-test-orchestrator = "androidx.test:orchestrator:1.4.2"
 androidx-test-uiAutomator = "androidx.test.uiautomator:uiautomator:2.2.0"
