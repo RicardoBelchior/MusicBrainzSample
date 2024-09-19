@@ -1,10 +1,7 @@
-@file:OptIn(ExperimentalFoundationApi::class)
-
 package com.rbelchior.dicetask.ui.artist.search
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.animateScrollBy
 import androidx.compose.foundation.layout.Arrangement
@@ -32,7 +29,6 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -54,7 +50,6 @@ import com.rbelchior.dicetask.ui.components.ArtistIcon
 import com.rbelchior.dicetask.ui.components.ArtistLabel
 import org.koin.androidx.compose.koinViewModel
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun ArtistSearchScreen(
     navController: NavController,
@@ -155,7 +150,6 @@ private fun ArtistsTextInput(
     )
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ArtistsList(
     uiState: ArtistSearchUiState,
