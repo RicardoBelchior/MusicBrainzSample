@@ -22,7 +22,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -189,11 +189,11 @@ fun ArtistsList(
             if (i >= uiState.searchResults.size - 1 && uiState.shouldLoadMore) {
                 onLoadMore()
             }
-            ArtistItem(Modifier.animateItemPlacement(), artist, onArtistClicked)
+            ArtistItem(Modifier.animateItem(), artist, onArtistClicked)
 
             // Display divider between each item
             if (i < uiState.searchResults.lastIndex) {
-                Divider()
+                HorizontalDivider()
             }
         }
 
@@ -208,11 +208,11 @@ fun ArtistsList(
             }
         }
         itemsIndexed(uiState.filteredSavedArtists) { i, artist ->
-            ArtistItem(Modifier.animateItemPlacement(), artist, onArtistClicked)
+            ArtistItem(Modifier.animateItem(), artist, onArtistClicked)
 
             // Display divider between each item
             if (i < uiState.savedArtists.lastIndex) {
-                Divider()
+                HorizontalDivider()
             }
         }
 
