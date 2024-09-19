@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("org.jetbrains.kotlin.plugin.compose") version libs.versions.kotlin.get()
     id("com.google.devtools.ksp") version libs.versions.ksp
     kotlin("plugin.serialization") version libs.versions.kotlin.get()
 }
@@ -42,10 +43,6 @@ android {
 
     buildFeatures {
         compose = true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
     }
 
     packagingOptions {
@@ -94,7 +91,7 @@ dependencies {
     testImplementation(libs.kotlin.coroutines.test)
     testImplementation(libs.kotlin.coroutines.android)
     testImplementation(libs.ktor.mock)
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    androidTestImplementation(libs.androidx.test.junit)
     androidTestImplementation(libs.androidx.test.espressoCore)
     androidTestImplementation(libs.compose.ui.test.junit4)
     androidTestImplementation(libs.kotest.assertions)
