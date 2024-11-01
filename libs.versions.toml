@@ -1,11 +1,9 @@
 [versions]
 
+androidxComposeBom = "2024.10.01"
 compose = "1.7.2"
-composeMaterial3 = "1.3.0"
-composesnapshot = "-" # a single character = no snapshot
 
-gradlePlugin = "8.6.1"
-lintMinCompose = "30.0.0"
+gradlePlugin = "8.7.1"
 
 kotlin = "2.0.20"
 coroutines = "1.8.1"
@@ -14,26 +12,25 @@ ksp = "2.0.20-1.0.24"
 room = "2.6.1"
 
 androidxtest = "1.6.1"
-androidxnavigation = "2.8.1"
+androidxnavigation = "2.8.3"
 androidxWindow = "1.3.0"
 
 ktor = "2.2.3"
 
 [libraries]
-compose-ui-ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
-compose-ui-util = { module = "androidx.compose.ui:ui-util", version.ref = "compose" }
-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
-compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
-compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose" }
-compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "compose" }
-compose-foundation-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "compose" }
-compose-foundation-layout = { module = "androidx.compose.foundation:foundation-layout", version.ref = "compose" }
-compose-material-material = { module = "androidx.compose.material:material", version.ref = "compose" }
-compose-material-iconsext = { module = "androidx.compose.material:material-icons-extended", version.ref = "compose" }
-compose-material3-material3 = { module = "androidx.compose.material3:material3", version.ref = "composeMaterial3" }
-compose-animation-animation = { module = "androidx.compose.animation:animation", version.ref = "compose" }
-
-navigation-compose = "androidx.navigation:navigation-compose:2.8.1"
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "androidxComposeBom" }
+compose-ui-ui = { module = "androidx.compose.ui:ui" }
+compose-ui-util = { module = "androidx.compose.ui:ui-util" }
+compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
+compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
+compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
+compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
+compose-foundation-foundation = { module = "androidx.compose.foundation:foundation" }
+compose-foundation-layout = { module = "androidx.compose.foundation:foundation-layout" }
+compose-material-material = { module = "androidx.compose.material:material" }
+compose-material-iconsext = { module = "androidx.compose.material:material-icons-extended" }
+compose-material3-material3 = { module = "androidx.compose.material3:material3" }
+compose-animation-animation = { module = "androidx.compose.animation:animation" }
 
 android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "gradlePlugin" }
 gradleMavenPublishPlugin = "com.vanniktech:gradle-maven-publish-plugin:0.17.0"
@@ -55,13 +52,13 @@ coil-gif = { module = "io.coil-kt:coil-gif", version.ref = "coil" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 
 androidx-appcompat = "androidx.appcompat:appcompat:1.7.0"
-androidx-core = "androidx.core:core-ktx:1.13.1"
-androidx-activity-compose = "androidx.activity:activity-compose:1.9.2"
-androidx-fragment = "androidx.fragment:fragment-ktx:1.8.3"
+androidx-core = "androidx.core:core-ktx:1.15.0"
+androidx-activity-compose = "androidx.activity:activity-compose:1.9.3"
+androidx-fragment = "androidx.fragment:fragment-ktx:1.8.5"
 androidx-dynamicanimation = "androidx.dynamicanimation:dynamicanimation-ktx:1.0.0-alpha03"
-androidx-lifecycle-runtime = "androidx.lifecycle:lifecycle-runtime-ktx:2.8.6"
-androidx-lifecycle-runtime-compose = "androidx.lifecycle:lifecycle-runtime-compose:2.8.6"
-androidx-lifecycle-viewmodel-compose = "androidx.lifecycle:lifecycle-viewmodel-compose:2.8.6"
+androidx-lifecycle-runtime = "androidx.lifecycle:lifecycle-runtime-ktx:2.8.7"
+androidx-lifecycle-runtime-compose = "androidx.lifecycle:lifecycle-runtime-compose:2.8.7"
+androidx-lifecycle-viewmodel-compose = "androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7"
 androidx-window = { module = "androidx.window:window", version.ref = "androidxWindow" }
 androidx-window-testing = { module = "androidx.window:window-testing", version.ref = "androidxWindow" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
@@ -77,7 +74,7 @@ androidx-test-core = "androidx.test:core-ktx:1.6.1"
 androidx-test-runner = "androidx.test:runner:1.6.2"
 androidx-test-rules = { module = "androidx.test:rules", version.ref = "androidxtest" }
 androidx-test-junit = "androidx.test.ext:junit:1.2.1"
-androidx-test-orchestrator = "androidx.test:orchestrator:1.5.0"
+androidx-test-orchestrator = "androidx.test:orchestrator:1.5.1"
 androidx-test-uiAutomator = "androidx.test.uiautomator:uiautomator:2.3.0"
 
 # alpha for robolectric x compose fix

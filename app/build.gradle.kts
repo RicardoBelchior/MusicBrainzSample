@@ -8,7 +8,7 @@ plugins {
 
 android {
     namespace = "com.rbelchior.dicetask"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.rbelchior.dicetask"
@@ -54,6 +54,7 @@ android {
 
 dependencies {
 
+    implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.core)
     implementation(libs.androidx.lifecycle.runtime)
     implementation(libs.androidx.activity.compose)
@@ -68,7 +69,7 @@ dependencies {
     ksp(libs.androidx.room.compiler)
 
     implementation(libs.mdc)
-    implementation(libs.navigation.compose)
+    implementation(libs.androidx.navigation.compose)
     implementation(libs.coil.compose)
 
     implementation(libs.kotlin.serialization)
