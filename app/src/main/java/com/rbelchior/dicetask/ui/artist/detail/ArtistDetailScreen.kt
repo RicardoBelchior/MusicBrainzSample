@@ -42,10 +42,10 @@ fun ArtistDetailScreen(
     }
 
     ArtistDetailScreen(
-        artistName,
-        uiState.value,
-        { navController.popBackStack() },
-        {
+        artistName = artistName,
+        uiState = uiState.value,
+        onBackButtonClicked = { navController.popBackStack() },
+        onSaveArtistClicked = {
             viewModel.toggleSavedArtist(it)
             scope.launch {
                 val messageSuffix = if (it.isSaved) " removed." else " saved."
@@ -55,7 +55,7 @@ fun ArtistDetailScreen(
                 )
             }
         },
-        { albumDialogOpened.value = it }
+        onAlbumClicked = { albumDialogOpened.value = it }
     )
 }
 
