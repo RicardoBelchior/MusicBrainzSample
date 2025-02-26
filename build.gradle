@@ -1,8 +1,4 @@
-buildscript {
-    ext {
-        compose_version = libs.versions.compose
-    }
-}// Top-level build file where you can add configuration options common to all sub-projects/modules.
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
     id 'com.android.application' version libs.versions.gradlePlugin apply false
     id 'com.android.library' version libs.versions.gradlePlugin apply false
