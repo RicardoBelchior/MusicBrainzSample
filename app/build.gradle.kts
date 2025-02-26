@@ -4,6 +4,7 @@ plugins {
     id("org.jetbrains.kotlin.plugin.compose") version libs.versions.kotlin.get()
     id("com.google.devtools.ksp") version libs.versions.ksp
     kotlin("plugin.serialization") version libs.versions.kotlin.get()
+    alias(libs.plugins.baselineprofile)
 }
 
 android {
@@ -25,12 +26,25 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             )
         }
     }
+
+    testOptions {
+        managedDevices {
+            localDevices {
+                create("pixel2api30") {
+                    device = "Pixel 2"
+                    apiLevel = 30
+                    systemImageSource = "aosp-atd"
+                }
+            }
+        }
+    }
+
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -66,6 +80,8 @@ dependencies {
 
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.profileinstaller)
+    baselineProfile(project(":baseline-profile"))
     ksp(libs.androidx.room.compiler)
 
     implementation(libs.mdc)

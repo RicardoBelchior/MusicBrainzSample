@@ -9,10 +9,7 @@ import com.rbelchior.dicetask.ui.theme.DiceTaskTheme
 import org.junit.Rule
 import org.junit.Test
 
-/**
- * Simple Compose UI test to demonstrate usage of the Compose testing API.
- * With more time, I would refactor this class to use the Testing Robots pattern.
- */
+
 class ArtistSearchScreenTest {
 
     @get:Rule

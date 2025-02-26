@@ -20,3 +20,4 @@ dependencyResolutionManagement {
 rootProject.name = "DiceTask"
 include(":app")
 
+include(":baseline-profile")
