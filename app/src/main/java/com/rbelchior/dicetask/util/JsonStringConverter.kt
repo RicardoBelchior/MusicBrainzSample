@@ -1,7 +1,6 @@
 package com.rbelchior.dicetask.util
 
 import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.serializer
 import logcat.LogPriority

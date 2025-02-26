@@ -4,7 +4,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.*
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -17,28 +19,30 @@ import androidx.navigation.navArgument
 import com.rbelchior.dicetask.ui.artist.detail.ArtistDetailScreen
 import com.rbelchior.dicetask.ui.artist.search.ArtistSearchScreen
 import com.rbelchior.dicetask.ui.theme.DiceTaskTheme
+import org.koin.compose.KoinContext
 import org.koin.core.component.KoinComponent
 
 class MainActivity : ComponentActivity(), KoinComponent {
 
-    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             val navController = rememberNavController()
             val snackbarHostState = remember { SnackbarHostState() }
 
-            DiceTaskTheme {
-                Scaffold(
-                    topBar = {}, // This could be used for the toolbar
-                    bottomBar = {}, // Or the bottom navigation
-                    snackbarHost = { SnackbarHost(snackbarHostState) }
-                ) { contentPadding ->
-                    NavigationComponent(
-                        navController,
-                        snackbarHostState,
-                        Modifier.padding(contentPadding)
-                    )
+            KoinContext {
+                DiceTaskTheme {
+                    Scaffold(
+                        topBar = {}, // This could be used for the toolbar
+                        bottomBar = {}, // Or the bottom navigation
+                        snackbarHost = { SnackbarHost(snackbarHostState) }
+                    ) { contentPadding ->
+                        NavigationComponent(
+                            navController,
+                            snackbarHostState,
+                            Modifier.padding(contentPadding)
+                        )
+                    }
                 }
             }
         }

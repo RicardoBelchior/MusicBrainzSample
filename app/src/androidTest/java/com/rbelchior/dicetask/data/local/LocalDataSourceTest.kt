@@ -6,13 +6,11 @@ import app.cash.turbine.test
 import com.rbelchior.dicetask.domain.ReleaseGroup
 import com.rbelchior.dicetask.ui.artist.search.ArtistFactory
 import io.kotest.matchers.shouldBe
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class LocalDataSourceTest {
 
     private lateinit var artistsDatabase: ArtistsDatabase

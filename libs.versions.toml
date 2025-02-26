@@ -9,6 +9,7 @@ coroutines = "1.10.1"
 coil = "2.7.0"
 ksp = "2.0.20-1.0.24"
 room = "2.6.1"
+koin = "4.0.1"
 
 androidxtest = "1.6.1"
 androidxnavigation = "2.8.7"
@@ -82,8 +83,8 @@ androidx-test-espressoWeb = "androidx.test.espresso:espresso-web:3.6.1"
 
 junit = "junit:junit:4.13.2"
 
-koin-android = "io.insert-koin:koin-android:3.3.2"
-koin-compose = "io.insert-koin:koin-androidx-compose:3.4.1"
+koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
+koin-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin" }
 koin-test = "io.insert-koin:koin-test-junit4:3.3.2"
 
 ktor-android = { module = "io.ktor:ktor-client-android", version.ref = "ktor" }
