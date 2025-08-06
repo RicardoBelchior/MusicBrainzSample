@@ -86,6 +86,10 @@ dependencies {
 
     implementation(libs.logcat)
 
+    // Added only for temporary experiments
+    implementation(libs.lottie)
+    implementation(libs.lottie.compose)
+
     testImplementation(libs.junit)
     testImplementation(libs.mockk)
     testImplementation(libs.kotest.assertions)

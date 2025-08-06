@@ -4,6 +4,9 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!-- Added only for temporary experiments -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+
     <application
         android:name=".DiceTaskApp"
         android:allowBackup="true"
