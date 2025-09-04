@@ -1,23 +1,23 @@
 [versions]
 
-androidxComposeBom = "2025.02.00"
+androidxComposeBom = "2025.08.01"
 
-gradlePlugin = "8.7.3"
+gradlePlugin = "8.12.2"
 
-kotlin = "2.1.0"
-coroutines = "1.10.1"
-coil = "2.7.0"
-ksp = "2.0.20-1.0.24"
-room = "2.6.1"
-koin = "4.0.1"
+kotlin = "2.2.0"
+coroutines = "1.10.2"
+coil = "3.3.0"
+ksp = "2.2.0-2.0.2"
+room = "2.7.2"
+koin = "4.1.1"
 
-androidxtest = "1.6.1"
-androidxnavigation = "2.8.7"
-androidxWindow = "1.3.0"
+androidxtest = "1.7.0"
+androidxnavigation = "2.9.3"
+androidxWindow = "1.4.0"
 
-ktor = "2.2.3"
+ktor = "3.2.3"
 
-lottie = "6.6.4"
+lottie = "6.6.7"
 
 [libraries]
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "androidxComposeBom" }
@@ -35,32 +35,31 @@ compose-material3-material3 = { module = "androidx.compose.material3:material3" 
 compose-animation-animation = { module = "androidx.compose.animation:animation" }
 
 android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "gradlePlugin" }
-gradleMavenPublishPlugin = "com.vanniktech:gradle-maven-publish-plugin:0.17.0"
+gradleMavenPublishPlugin = "com.vanniktech:gradle-maven-publish-plugin:0.34.0"
 metalavaGradle = "me.tylerbwong.gradle:metalava-gradle:0.1.9"
 
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
 kotlin-stdlibJdk8 = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin" }
 kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
-kotlin-metadataJvm = "org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.6.2"
-kotlin-serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0"
-kotlin-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.4.1"
+kotlin-metadataJvm = "org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.9.0"
+kotlin-serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0"
+kotlin-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.7.1"
 
 kotlin-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 kotlin-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 
-coil-coil = { module = "io.coil-kt:coil", version.ref = "coil" }
-coil-gif = { module = "io.coil-kt:coil-gif", version.ref = "coil" }
-coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
+coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
+coil-ktor3 = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coil" }
 
-androidx-appcompat = "androidx.appcompat:appcompat:1.7.0"
-androidx-core = "androidx.core:core-ktx:1.15.0"
-androidx-activity-compose = "androidx.activity:activity-compose:1.10.0"
-androidx-fragment = "androidx.fragment:fragment-ktx:1.8.6"
-androidx-dynamicanimation = "androidx.dynamicanimation:dynamicanimation-ktx:1.0.0-alpha03"
-androidx-lifecycle-runtime = "androidx.lifecycle:lifecycle-runtime-ktx:2.8.7"
-androidx-lifecycle-runtime-compose = "androidx.lifecycle:lifecycle-runtime-compose:2.8.7"
-androidx-lifecycle-viewmodel-compose = "androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7"
+androidx-appcompat = "androidx.appcompat:appcompat:1.7.1"
+androidx-core = "androidx.core:core-ktx:1.17.0"
+androidx-activity-compose = "androidx.activity:activity-compose:1.10.1"
+androidx-fragment = "androidx.fragment:fragment-ktx:1.8.9"
+androidx-dynamicanimation = "androidx.dynamicanimation:dynamicanimation-ktx:1.1.0"
+androidx-lifecycle-runtime = "androidx.lifecycle:lifecycle-runtime-ktx:2.9.3"
+androidx-lifecycle-runtime-compose = "androidx.lifecycle:lifecycle-runtime-compose:2.9.3"
+androidx-lifecycle-viewmodel-compose = "androidx.lifecycle:lifecycle-viewmodel-compose:2.9.3"
 androidx-window = { module = "androidx.window:window", version.ref = "androidxWindow" }
 androidx-window-testing = { module = "androidx.window:window-testing", version.ref = "androidxWindow" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
@@ -70,24 +69,24 @@ androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "androidxnavigation" }
 androidx-navigation-testing = { module = "androidx.navigation:navigation-testing", version.ref = "androidxnavigation" }
 
-mdc = "com.google.android.material:material:1.12.0"
+mdc = "com.google.android.material:material:1.13.0"
 
-androidx-test-core = "androidx.test:core-ktx:1.6.1"
-androidx-test-runner = "androidx.test:runner:1.6.2"
+androidx-test-core = "androidx.test:core-ktx:1.7.0"
+androidx-test-runner = "androidx.test:runner:1.7.0"
 androidx-test-rules = { module = "androidx.test:rules", version.ref = "androidxtest" }
-androidx-test-junit = "androidx.test.ext:junit:1.2.1"
-androidx-test-orchestrator = "androidx.test:orchestrator:1.5.1"
+androidx-test-junit = "androidx.test.ext:junit:1.3.0"
+androidx-test-orchestrator = "androidx.test:orchestrator:1.6.1"
 androidx-test-uiAutomator = "androidx.test.uiautomator:uiautomator:2.3.0"
 
 # alpha for robolectric x compose fix
-androidx-test-espressoCore = "androidx.test.espresso:espresso-core:3.6.1"
-androidx-test-espressoWeb = "androidx.test.espresso:espresso-web:3.6.1"
+androidx-test-espressoCore = "androidx.test.espresso:espresso-core:3.7.0"
+androidx-test-espressoWeb = "androidx.test.espresso:espresso-web:3.7.0"
 
 junit = "junit:junit:4.13.2"
 
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 koin-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin" }
-koin-test = "io.insert-koin:koin-test-junit4:3.3.2"
+koin-test = "io.insert-koin:koin-test-junit4:4.1.1"
 
 ktor-android = { module = "io.ktor:ktor-client-android", version.ref = "ktor" }
 ktor-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
@@ -97,11 +96,11 @@ ktor-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version
 ktor-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
 ktor-mock = { module = "io.ktor:ktor-client-mock", version.ref = "ktor" }
 
-logcat = "com.squareup.logcat:logcat:0.1"
+logcat = "com.squareup.logcat:logcat:0.4"
 
-mockk = "io.mockk:mockk:1.13.4"
-kotest-assertions = "io.kotest:kotest-assertions-core:5.5.5"
-turbine = "app.cash.turbine:turbine:0.12.1"
+mockk = "io.mockk:mockk:1.14.5"
+kotest-assertions = "io.kotest:kotest-assertions-core:6.0.2"
+turbine = "app.cash.turbine:turbine:1.2.1"
 
 lottie = { group = "com.airbnb.android", name = "lottie", version.ref = "lottie" }
 lottie-compose = { group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottie" }

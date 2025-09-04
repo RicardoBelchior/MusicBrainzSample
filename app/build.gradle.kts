@@ -8,7 +8,7 @@ plugins {
 
 android {
     namespace = "com.rbelchior.dicetask"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.rbelchior.dicetask"
@@ -45,7 +45,7 @@ android {
         compose = true
     }
 
-    packagingOptions {
+    packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
@@ -71,6 +71,7 @@ dependencies {
     implementation(libs.mdc)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.coil.compose)
+    implementation(libs.coil.ktor3)
 
     implementation(libs.kotlin.serialization)
     implementation(libs.kotlin.datetime)

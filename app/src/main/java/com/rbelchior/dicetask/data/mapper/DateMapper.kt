@@ -1,7 +1,10 @@
+@file:OptIn(ExperimentalTime::class)
+
 package com.rbelchior.dicetask.data.mapper
 
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
+import kotlin.time.ExperimentalTime
 
 object DateMapper {
 
