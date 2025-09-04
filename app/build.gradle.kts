@@ -88,8 +88,8 @@ dependencies {
     implementation(libs.logcat)
 
     // Added only for temporary experiments
-    implementation(libs.lottie)
-    implementation(libs.lottie.compose)
+//    implementation(libs.lottie)
+//    implementation(libs.lottie.compose)
 
     testImplementation(libs.junit)
     testImplementation(libs.mockk)
