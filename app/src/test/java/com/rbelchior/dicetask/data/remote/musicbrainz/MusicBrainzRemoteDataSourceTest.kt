@@ -13,7 +13,7 @@ import org.junit.Test
 class MusicBrainzRemoteDataSourceTest {
 
     @Test
-    fun sampleClientTest() = runBlocking {
+    fun sampleClientTest(): Unit = runBlocking {
         val remoteDataSource = createRemoteDataSource(MockEngine {
             respond(
                 content = ByteReadChannel(SearchArtistsResponseFactory.sampleResponse),
