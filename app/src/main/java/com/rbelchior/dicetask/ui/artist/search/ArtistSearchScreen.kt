@@ -1,5 +1,7 @@
 package com.rbelchior.dicetask.ui.artist.search
 
+import android.graphics.BitmapFactory
+import android.graphics.RuntimeShader
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
@@ -29,8 +31,10 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
@@ -48,6 +52,7 @@ import com.rbelchior.dicetask.ui.artist.search.mvi.ArtistSearchIntent
 import com.rbelchior.dicetask.ui.artist.search.mvi.ArtistSearchUiState
 import com.rbelchior.dicetask.ui.components.ArtistIcon
 import com.rbelchior.dicetask.ui.components.ArtistLabel
+import com.rbelchior.dicetask.ui.sticker.StickerDemoScreen
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -105,7 +110,8 @@ fun ArtistSearchScreen(
         )
         Spacer(modifier = Modifier.size(24.dp))
         ArtistsTextInput(uiState, onValueChange, onClearClicked)
-        ArtistsList(uiState, onLoadMore, onArtistClicked)
+//        ArtistsList(uiState, onLoadMore, onArtistClicked)
+        StickerDemoScreen()
     }
 }
 
