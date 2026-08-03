@@ -1,6 +1,7 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     id("com.android.application")
-    id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.compose") version libs.versions.kotlin.get()
     id("com.google.devtools.ksp") version libs.versions.ksp
     kotlin("plugin.serialization") version libs.versions.kotlin.get()
@@ -8,12 +9,12 @@ plugins {
 
 android {
     namespace = "com.rbelchior.dicetask"
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.rbelchior.dicetask"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 37
         versionCode = 1
         versionName = "1.0"
 
@@ -37,18 +38,21 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
-    kotlinOptions {
-        jvmTarget = "17"
-    }
-
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
+    }
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_17)
     }
 }
 
@@ -63,6 +67,7 @@ dependencies {
     implementation(libs.compose.ui.ui)
     implementation(libs.compose.ui.graphics)
     implementation(libs.compose.ui.tooling.preview)
+    implementation(libs.compose.material.iconsext)
     implementation(libs.compose.material3.material3)
 
     implementation(libs.androidx.room.runtime)
